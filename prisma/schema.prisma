@@ -1,0 +1,420 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id                String   @id @default(uuid()) @db.Uuid
+  name              String
+  organization_type String
+  email             String?
+  phone             String?
+  province_code     String?
+  district_code     String?
+  address           String?
+  is_active         Boolean  @default(true)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  users             User[]
+  cases             Case[]           @relation("ReportingOrganization")
+  service_providers ReferralProvider[]
+  audit_logs        AuditLog[]
+
+  @@map("organizations")
+}
+
+model User {
+  id              String    @id @default(uuid()) @db.Uuid
+  organization_id String?   @db.Uuid
+  full_name       String
+  email           String    @unique
+  password_hash   String
+  phone           String?
+  is_active       Boolean   @default(true)
+  is_mfa_enabled  Boolean   @default(false)
+  last_login_at   DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  organization             Organization?            @relation(fields: [organization_id], references: [id])
+  user_roles               UserRole[]
+  created_cases            Case[]                   @relation("CreatedBy")
+  verified_cases           Case[]                   @relation("VerifiedBy")
+  case_status_histories    CaseStatusHistory[]
+  case_verifications       CaseVerification[]
+  case_documents           CaseDocument[]
+  referrals                Referral[]               @relation("ReferredBy")
+  audit_logs               AuditLog[]
+  data_export_logs         DataExportLog[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid()) @db.Uuid
+  role_name   String   @unique
+  description String?
+  created_at  DateTime @default(now())
+
+  user_roles       UserRole[]
+  role_permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id              String   @id @default(uuid()) @db.Uuid
+  permission_code String   @unique
+  description     String?
+  created_at      DateTime @default(now())
+
+  role_permissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model UserRole {
+  user_id String @db.Uuid
+  role_id String @db.Uuid
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, role_id])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  role_id       String @db.Uuid
+  permission_id String @db.Uuid
+
+  role       Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
+
+  @@id([role_id, permission_id])
+  @@map("role_permissions")
+}
+
+model Location {
+  id            String     @id @default(uuid()) @db.Uuid
+  parent_id     String?    @db.Uuid
+  location_level Int
+  location_code String     @unique
+  name          String
+  latitude      Float?
+  longitude     Float?
+  is_active     Boolean    @default(true)
+
+  parent    Location?  @relation("LocationHierarchy", fields: [parent_id], references: [id])
+  children  Location[] @relation("LocationHierarchy")
+
+  incident_locations  CaseIncident[]
+  reporting_cases     Case[]        @relation("ReportingLocation")
+  incident_cases      Case[]        @relation("IncidentLocation")
+  referral_providers  ReferralProvider[]
+
+  @@map("locations")
+}
+
+model ViolenceType {
+  id          String   @id @default(uuid()) @db.Uuid
+  code        String   @unique
+  name        String
+  description String?
+  is_active   Boolean  @default(true)
+
+  case_violence_types CaseViolenceType[]
+
+  @@map("violence_types")
+}
+
+model ServiceType {
+  id          String   @id @default(uuid()) @db.Uuid
+  code        String   @unique
+  name        String
+  description String?
+  is_active   Boolean  @default(true)
+
+  case_services CaseService[]
+  referrals     Referral[]
+
+  @@map("service_types")
+}
+
+model Case {
+  id                       String   @id @default(uuid()) @db.Uuid
+  case_number              String   @unique
+  reporting_organization_id String?  @db.Uuid
+  created_by               String?  @db.Uuid
+  reported_at              DateTime
+  incident_date_start      DateTime?
+  incident_date_end        DateTime?
+  incident_location_id     String?  @db.Uuid
+  reporting_location_id    String?  @db.Uuid
+  case_category            String?
+  case_status              String   @default("DRAFT")
+  verification_status      String   @default("PENDING")
+  risk_level               String?
+  urgency_level            String?
+  source_type              String?
+  source_reference         String?
+  summary                  String?
+  is_anonymized            Boolean  @default(true)
+  is_archived              Boolean  @default(false)
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
+  submitted_at             DateTime?
+  verified_at              DateTime?
+  verified_by              String?  @db.Uuid
+
+  reporting_organization Organization? @relation("ReportingOrganization", fields: [reporting_organization_id], references: [id])
+  created_by_user        User?        @relation("CreatedBy", fields: [created_by], references: [id])
+  verified_by_user       User?        @relation("VerifiedBy", fields: [verified_by], references: [id])
+  incident_location      Location?    @relation("IncidentLocation", fields: [incident_location_id], references: [id])
+  reporting_location     Location?    @relation("ReportingLocation", fields: [reporting_location_id], references: [id])
+
+  incidents            CaseIncident[]
+  case_violence_types  CaseViolenceType[]
+  survivors            CaseSurvivor[]
+  services             CaseService[]
+  referrals            Referral[]
+  status_history       CaseStatusHistory[]
+  verifications        CaseVerification[]
+  documents            CaseDocument[]
+
+  @@index([reported_at])
+  @@index([incident_location_id])
+  @@index([case_status])
+  @@index([verification_status])
+  @@map("cases")
+}
+
+model CaseIncident {
+  id                   String   @id @default(uuid()) @db.Uuid
+  case_id              String   @db.Uuid
+  incident_date_start  DateTime
+  incident_date_end    DateTime?
+  location_id          String?  @db.Uuid
+  incident_setting     String?
+  perpetrator_relationship String?
+  perpetrator_count    Int?
+  description          String?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  case     Case      @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  location Location? @relation(fields: [location_id], references: [id])
+
+  @@index([case_id])
+  @@map("case_incidents")
+}
+
+model CaseViolenceType {
+  id              String   @id @default(uuid()) @db.Uuid
+  case_id         String   @db.Uuid
+  violence_type_id String  @db.Uuid
+  severity_level  Int?
+  notes           String?
+  created_at      DateTime @default(now())
+
+  case         Case         @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  violence_type ViolenceType @relation(fields: [violence_type_id], references: [id])
+
+  @@unique([case_id, violence_type_id])
+  @@map("case_violence_types")
+}
+
+model CaseSurvivor {
+  id                  String   @id @default(uuid()) @db.Uuid
+  case_id             String   @db.Uuid
+  survivor_code       String
+  age_group           String?
+  gender              String?
+  disability_status   String?
+  marital_status      String?
+  employment_status   String?
+  education_level     String?
+  vulnerable_group    String?
+  is_primary_survivor Boolean  @default(false)
+  created_at          DateTime @default(now())
+
+  case              Case                    @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  sensitive_profile SurvivorSensitiveProfile?
+  services          CaseService[]
+  referrals         Referral[]
+
+  @@unique([case_id, survivor_code])
+  @@index([case_id])
+  @@map("case_survivors")
+}
+
+model SurvivorSensitiveProfile {
+  id                    String   @id @default(uuid()) @db.Uuid
+  case_survivor_id      String   @unique @db.Uuid
+  encrypted_full_name   String?
+  encrypted_date_of_birth String?
+  encrypted_phone       String?
+  encrypted_address     String?
+  encrypted_identity_number String?
+  consent_status        String   @default("NOT_ASKED")
+  consent_recorded_at   DateTime?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  survivor CaseSurvivor @relation(fields: [case_survivor_id], references: [id], onDelete: Cascade)
+
+  @@map("survivor_sensitive_profiles")
+}
+
+model CaseService {
+  id                    String   @id @default(uuid()) @db.Uuid
+  case_id               String   @db.Uuid
+  survivor_id           String?  @db.Uuid
+  service_type_id       String   @db.Uuid
+  service_status        String   @default("NEEDED")
+  provider_organization_id String? @db.Uuid
+  requested_at          DateTime?
+  received_at           DateTime?
+  completed_at          DateTime?
+  notes                 String?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  case     Case         @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  survivor CaseSurvivor? @relation(fields: [survivor_id], references: [id])
+  service_type ServiceType @relation(fields: [service_type_id], references: [id])
+
+  @@index([case_id])
+  @@map("case_services")
+}
+
+model ReferralProvider {
+  id                    String   @id @default(uuid()) @db.Uuid
+  organization_id       String?  @db.Uuid
+  provider_name         String
+  provider_type         String?
+  location_id           String?  @db.Uuid
+  contact_info_encrypted String?
+  is_active             Boolean  @default(true)
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  organization Organization? @relation(fields: [organization_id], references: [id])
+  location     Location?     @relation(fields: [location_id], references: [id])
+  referrals    Referral[]
+
+  @@map("referral_providers")
+}
+
+model Referral {
+  id                 String   @id @default(uuid()) @db.Uuid
+  case_id            String   @db.Uuid
+  survivor_id        String?  @db.Uuid
+  referral_provider_id String? @db.Uuid
+  service_type_id    String   @db.Uuid
+  referred_by        String?  @db.Uuid
+  referral_date      DateTime @default(now())
+  referral_status    String   @default("PENDING")
+  response_date      DateTime?
+  completion_date    DateTime?
+  notes              String?
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  case             Case             @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  survivor         CaseSurvivor?    @relation(fields: [survivor_id], references: [id])
+  provider         ReferralProvider? @relation(fields: [referral_provider_id], references: [id])
+  service_type     ServiceType      @relation(fields: [service_type_id], references: [id])
+  referred_by_user User?            @relation("ReferredBy", fields: [referred_by], references: [id])
+
+  @@index([case_id])
+  @@map("referrals")
+}
+
+model CaseStatusHistory {
+  id              String    @id @default(uuid()) @db.Uuid
+  case_id         String    @db.Uuid
+  previous_status String?
+  new_status      String
+  changed_by      String?   @db.Uuid
+  notes           String?
+  changed_at      DateTime  @default(now())
+
+  case       Case  @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  changed_by_user User? @relation(fields: [changed_by], references: [id])
+
+  @@map("case_status_history")
+}
+
+model CaseVerification {
+  id                 String   @id @default(uuid()) @db.Uuid
+  case_id            String   @db.Uuid
+  verification_status String
+  verified_by        String?  @db.Uuid
+  verification_notes String?
+  completeness_score Int?
+  verified_at        DateTime @default(now())
+
+  case         Case  @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  verified_by_user User? @relation(fields: [verified_by], references: [id])
+
+  @@map("case_verifications")
+}
+
+model CaseDocument {
+  id            String   @id @default(uuid()) @db.Uuid
+  case_id       String   @db.Uuid
+  document_type String
+  file_name     String?
+  storage_key   String?
+  is_sensitive  Boolean  @default(false)
+  uploaded_by   String?  @db.Uuid
+  uploaded_at   DateTime @default(now())
+
+  case         Case  @relation(fields: [case_id], references: [id], onDelete: Cascade)
+  uploaded_by_user User? @relation(fields: [uploaded_by], references: [id])
+
+  @@map("case_documents")
+}
+
+model AuditLog {
+  id              String   @id @default(uuid()) @db.Uuid
+  user_id         String?  @db.Uuid
+  organization_id String?  @db.Uuid
+  action          String
+  entity_type     String
+  entity_id       String?
+  ip_address      String?
+  user_agent      String?
+  old_value       Json?
+  new_value       Json?
+  created_at      DateTime @default(now())
+
+  user         User?         @relation(fields: [user_id], references: [id])
+  organization Organization? @relation(fields: [organization_id], references: [id])
+
+  @@index([user_id])
+  @@index([created_at])
+  @@map("audit_logs")
+}
+
+model DataExportLog {
+  id                   String   @id @default(uuid()) @db.Uuid
+  requested_by         String?  @db.Uuid
+  export_type          String
+  export_format        String
+  filters              Json?
+  contains_sensitive_data Boolean @default(false)
+  file_reference       String?
+  requested_at         DateTime @default(now())
+  completed_at         DateTime?
+
+  requested_by_user User? @relation(fields: [requested_by], references: [id])
+
+  @@map("data_export_logs")
+}
