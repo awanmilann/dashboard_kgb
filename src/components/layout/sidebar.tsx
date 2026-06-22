@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useSession } from "next-auth/react"
 import { cn } from "@/lib/utils/cn"
 import { Button } from "@/components/ui/button"
 import { PermissionGuard } from "@/components/shared/permission-guard"
@@ -102,35 +103,49 @@ const menuItems: MenuSection[] = [
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const { data: session } = useSession()
   const [collapsed, setCollapsed] = useState(false)
+  const orgLogo = session?.user?.organization_logo
 
   return (
     <>
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex flex-col bg-white border-r border-gray-200 transition-all duration-300",
+          "fixed inset-y-0 left-0 z-40 flex flex-col bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 transition-all duration-300",
           collapsed ? "-translate-x-full lg:translate-x-0 lg:w-16" : "translate-x-0 w-64"
         )}
       >
-        <div className="flex items-center h-16 px-4 border-b border-gray-200">
-          {collapsed ? (
-            <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center mx-auto">
-              <span className="text-white font-bold text-sm">K</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3 w-full">
-              <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0">
+        <div className={cn(
+          "flex items-center h-16 border-b border-gray-200 dark:border-gray-800",
+          collapsed ? "justify-center px-2" : "px-4"
+        )}>
+          <div className={cn("flex items-center gap-3", collapsed ? "justify-center" : "flex-1 min-w-0")}>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm">
+              {orgLogo ? (
+                <img src={orgLogo} alt="" className="w-full h-full object-cover" />
+              ) : (
                 <span className="text-white font-bold text-sm">K</span>
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">
+              )}
+            </div>
+            {!collapsed && (
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
                   KBG & TPKS
                 </p>
-                <p className="text-xs text-gray-500 truncate">
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                   Dashboard Pemantauan
                 </p>
               </div>
-            </div>
+            )}
+          </div>
+          {!collapsed && (
+            <button
+              onClick={() => setCollapsed(true)}
+              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded shrink-0 ml-2"
+              title="Perkecil sidebar"
+            >
+              <ChevronLeft className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            </button>
           )}
         </div>
 
@@ -138,7 +153,7 @@ export function AppSidebar() {
           {menuItems.map((section) => (
             <div key={section.section}>
               {!collapsed && (
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 mb-2">
                   {section.section}
                 </p>
               )}
@@ -153,8 +168,8 @@ export function AppSidebar() {
                       className={cn(
                         "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors",
                         isActive
-                          ? "bg-purple-50 text-purple-700 font-medium"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                          ? "bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-medium"
+                          : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200",
                         collapsed && "justify-center px-2"
                       )}
                       title={collapsed ? item.label : undefined}
@@ -178,11 +193,11 @@ export function AppSidebar() {
           ))}
         </nav>
 
-        <div className="p-3 border-t border-gray-200">
+        <div className="p-3 border-t border-gray-200 dark:border-gray-800">
           <Button
             variant="ghost"
             className={cn(
-              "text-gray-600 hover:text-red-600",
+              "text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400",
               collapsed ? "w-full flex justify-center px-2" : "w-full justify-start"
             )}
             onClick={() => signOut({ callbackUrl: "/login" })}
@@ -194,21 +209,24 @@ export function AppSidebar() {
         </div>
       </aside>
 
-      <button
-        className={cn(
-          "fixed z-50 p-2 rounded-md bg-white border shadow-sm transition-all duration-300",
-          collapsed
-            ? "top-4 left-4"
-            : "top-4 left-[260px] hidden lg:flex"
-        )}
-        onClick={() => setCollapsed(!collapsed)}
-      >
-        {collapsed ? (
-          <Menu className="h-5 w-5" />
-        ) : (
-          <ChevronLeft className="h-4 w-4 text-gray-500" />
-        )}
-      </button>
+      {collapsed && (
+        <button
+          onClick={() => setCollapsed(false)}
+          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm lg:flex hidden"
+          title="Perbesar sidebar"
+        >
+          <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+        </button>
+      )}
+      {collapsed && (
+        <button
+          onClick={() => setCollapsed(false)}
+          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm lg:hidden"
+          title="Buka menu"
+        >
+          <Menu className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+        </button>
+      )}
     </>
   )
 }

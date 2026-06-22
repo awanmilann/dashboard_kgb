@@ -7,7 +7,14 @@ export default function InternalLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className="min-h-screen bg-dashboard"
+      style={
+        {
+          "--sidebar-width": "16rem",
+        } as React.CSSProperties
+      }
+    >
       <AppSidebar />
       <div className="lg:pl-64 flex flex-col min-h-screen">
         <TopNavbar />

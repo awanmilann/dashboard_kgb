@@ -24,13 +24,13 @@ export function EmptyState({
   className,
 }: EmptyStateProps) {
   return (
-    <Card className={cn("w-full", className)}>
+    <Card className={cn("w-full border-gray-200/60 dark:border-gray-800/60", className)}>
       <CardContent className="flex flex-col items-center justify-center py-16">
-        <div className="mb-4 text-gray-300">
+        <div className="mb-4 text-gray-300 dark:text-gray-600">
           {icon ?? <Inbox className="h-16 w-16" />}
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-1">{title}</h3>
-        <p className="text-sm text-gray-500 text-center max-w-md mb-6">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">{title}</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-md mb-6">
           {description}
         </p>
         {action && (

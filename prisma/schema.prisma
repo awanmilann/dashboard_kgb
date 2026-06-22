@@ -8,17 +8,19 @@ datasource db {
 }
 
 model Organization {
-  id                String   @id @default(uuid()) @db.Uuid
-  name              String
-  organization_type String
-  email             String?
-  phone             String?
-  province_code     String?
-  district_code     String?
-  address           String?
-  is_active         Boolean  @default(true)
-  created_at        DateTime @default(now())
-  updated_at        DateTime @updatedAt
+  id                   String   @id @default(uuid()) @db.Uuid
+  name                 String
+  organization_type    String
+  email                String?
+  phone                String?
+  logo_url             String?
+  background_image_url String?
+  province_code        String?
+  district_code        String?
+  address              String?
+  is_active            Boolean  @default(true)
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
 
   users             User[]
   cases             Case[]           @relation("ReportingOrganization")
@@ -34,6 +36,7 @@ model User {
   full_name       String
   email           String    @unique
   password_hash   String
+  image           String?
   phone           String?
   is_active       Boolean   @default(true)
   is_mfa_enabled  Boolean   @default(false)

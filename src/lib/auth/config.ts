@@ -42,8 +42,10 @@ export const authConfig: NextAuthConfig = {
 
         token.id = dbUser.id
         token.full_name = dbUser.full_name
+        token.image = dbUser.image
         token.organization_id = dbUser.organization_id
         token.organization_name = dbUser.organization?.name ?? null
+        token.organization_logo = dbUser.organization?.logo_url ?? null
         token.roles = roles
         token.permissions = permissions
         token.is_active = dbUser.is_active
@@ -55,8 +57,10 @@ export const authConfig: NextAuthConfig = {
         ...session.user,
         id: token.id as string,
         full_name: token.full_name as string,
+        image: (token.image as string) ?? null,
         organization_id: (token.organization_id as string) ?? null,
         organization_name: (token.organization_name as string) ?? null,
+        organization_logo: (token.organization_logo as string) ?? null,
         roles: (token.roles as string[]) ?? [],
         permissions: (token.permissions as string[]) ?? [],
         is_active: (token.is_active as boolean) ?? true,

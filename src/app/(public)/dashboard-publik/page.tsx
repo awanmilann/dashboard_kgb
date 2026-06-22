@@ -9,10 +9,10 @@ import { BarChart3, Users, CheckCircle, AlertTriangle, ArrowLeft } from "lucide-
 
 export default function DashboardPublikPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 lg:p-6">
       <PageHeader title="Dashboard Publik KBG & TPKS" description="Data agregat kasus kekerasan berbasis gender dan TPKS">
         <Link href="/">
-          <Button variant="outline">
+          <Button variant="outline" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
             <ArrowLeft className="h-4 w-4 mr-1" />
             Kembali ke Beranda
           </Button>

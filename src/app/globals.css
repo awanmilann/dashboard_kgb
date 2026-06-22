@@ -3,6 +3,7 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
+    --background-secondary: 210 20% 98%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -10,6 +11,7 @@
     --popover-foreground: 240 10% 3.9%;
     --primary: 270 70% 50%;
     --primary-foreground: 0 0% 100%;
+    --primary-light: 270 70% 95%;
     --secondary: 240 5% 96%;
     --secondary-foreground: 240 6% 10%;
     --muted: 240 5% 96%;
@@ -22,10 +24,16 @@
     --input: 240 6% 90%;
     --ring: 270 70% 50%;
     --radius: 0.5rem;
+
+    --dashboard-bg: #f8f7fc;
+    --login-bg: linear-gradient(135deg, #f5f0ff 0%, #ffffff 50%, #f0f4ff 100%);
+    --sidebar-bg: #ffffff;
+    --header-bg: #ffffff;
   }
 
   .dark {
     --background: 240 10% 3.9%;
+    --background-secondary: 240 8% 6%;
     --foreground: 0 0% 98%;
     --card: 240 10% 5.9%;
     --card-foreground: 0 0% 98%;
@@ -33,6 +41,7 @@
     --popover-foreground: 0 0% 98%;
     --primary: 270 70% 60%;
     --primary-foreground: 0 0% 100%;
+    --primary-light: 270 50% 15%;
     --secondary: 240 4% 16%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 4% 16%;
@@ -44,15 +53,30 @@
     --border: 240 4% 16%;
     --input: 240 4% 16%;
     --ring: 270 70% 60%;
+
+    --dashboard-bg: #0a0a0f;
+    --login-bg: linear-gradient(135deg, #0d0a14 0%, #0a0a0f 50%, #0a0d14 100%);
+    --sidebar-bg: #0d0a14;
+    --header-bg: #0d0a14;
   }
 }
 
 @layer base {
   * {
     border-color: hsl(var(--border));
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+  }
+}
+
+@layer utilities {
+  .bg-dashboard {
+    background: var(--dashboard-bg);
+  }
+  .bg-login {
+    background: var(--login-bg);
   }
 }
