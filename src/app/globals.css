@@ -25,9 +25,9 @@
     --ring: 270 70% 50%;
     --radius: 0.5rem;
 
-    --dashboard-bg: #f8f7fc;
+    --dashboard-bg: #f0eef6;
     --login-bg: linear-gradient(135deg, #f5f0ff 0%, #ffffff 50%, #f0f4ff 100%);
-    --sidebar-bg: #ffffff;
+    --sidebar-bg: #0d0a14;
     --header-bg: #ffffff;
   }
 

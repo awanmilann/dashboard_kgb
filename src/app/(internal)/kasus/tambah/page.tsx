@@ -11,6 +11,16 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils/cn"
 import { ChevronLeft, ChevronRight, Save, Send } from "lucide-react"
 
+const PROVINSI = [
+  "Aceh","Sumatera Utara","Sumatera Barat","Riau","Kepulauan Riau","Jambi","Sumatera Selatan",
+  "Bangka Belitung","Bengkulu","Lampung","Banten","DKI Jakarta","Jawa Barat","Jawa Tengah",
+  "DI Yogyakarta","Jawa Timur","Bali","Nusa Tenggara Barat","Nusa Tenggara Timur",
+  "Kalimantan Barat","Kalimantan Tengah","Kalimantan Selatan","Kalimantan Timur","Kalimantan Utara",
+  "Sulawesi Utara","Sulawesi Tengah","Sulawesi Barat","Sulawesi Selatan","Sulawesi Tenggara",
+  "Gorontalo","Maluku","Maluku Utara","Papua Barat","Papua Barat Daya","Papua","Papua Tengah",
+  "Papua Pegunungan","Papua Selatan",
+]
+
 const steps = [
   { id: 1, label: "Informasi Pelaporan" },
   { id: 2, label: "Informasi Kejadian" },
@@ -19,20 +29,25 @@ const steps = [
   { id: 5, label: "Tinjau & Kirim" },
 ]
 
+const provinceOptions = PROVINSI.map((p) => ({ value: p.toLowerCase().replace(/\s+/g, "_"), label: p }))
+
 export default function TambahKasusPage() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
 
   const [organisasi, setOrganisasi] = useState("")
+  const [organisasiLain, setOrganisasiLain] = useState("")
   const [tanggalLapor, setTanggalLapor] = useState("")
   const [lokasiPelaporan, setLokasiPelaporan] = useState("")
   const [kategori, setKategori] = useState("")
   const [sumber, setSumber] = useState("")
+  const [sumberLain, setSumberLain] = useState("")
   const [urgensi, setUrgensi] = useState("")
   const [catatanPelaporan, setCatatanPelaporan] = useState("")
 
   const [tanggalKejadian, setTanggalKejadian] = useState("")
   const [lokasiKejadian, setLokasiKejadian] = useState("")
+  const [lokasiKejadianLain, setLokasiKejadianLain] = useState("")
   const [settingKejadian, setSettingKejadian] = useState("")
   const [pelaku, setPelaku] = useState("")
   const [jenisKekerasan, setJenisKekerasan] = useState("")
@@ -52,8 +67,20 @@ export default function TambahKasusPage() {
   const [layananDibutuhkan, setLayananDibutuhkan] = useState("")
   const [statusLayanan, setStatusLayanan] = useState("")
   const [penyediaLayanan, setPenyediaLayanan] = useState("")
+  const [penyediaLayananLain, setPenyediaLayananLain] = useState("")
   const [kebutuhanRujukan, setKebutuhanRujukan] = useState("")
   const [catatanPenanganan, setCatatanPenanganan] = useState("")
+
+  const OTHER = "__other__"
+
+  const withOther = (opts: { value: string; label: string }[]) => [
+    ...opts,
+    { value: OTHER, label: "Lainnya (isi manual)" },
+  ]
+
+  function getValue(val: string, custom: string) {
+    return val === OTHER ? custom : val
+  }
 
   const [setujuKirim, setSetujuKirim] = useState(false)
 
@@ -112,15 +139,23 @@ export default function TambahKasusPage() {
                   <Select
                     id="organisasi"
                     placeholder="Pilih organisasi"
-                    options={[
+                    options={withOther([
                       { value: "upt_p2tp2a", label: "UPT P2TP2A" },
                       { value: "dinas", label: "Dinas Sosial" },
                       { value: "puskesmas", label: "Puskesmas" },
                       { value: "polres", label: "Polres" },
-                    ]}
+                    ])}
                     value={organisasi}
                     onChange={(e) => setOrganisasi(e.target.value)}
                   />
+                  {organisasi === OTHER && (
+                    <Input
+                      placeholder="Ketik nama organisasi..."
+                      value={organisasiLain}
+                      onChange={(e) => setOrganisasiLain(e.target.value)}
+                      className="mt-1"
+                    />
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="tanggal_lapor">Tanggal Lapor</Label>
@@ -131,11 +166,7 @@ export default function TambahKasusPage() {
                   <Select
                     id="lokasi_pelaporan"
                     placeholder="Pilih lokasi"
-                    options={[
-                      { value: "jakarta", label: "Jakarta" },
-                      { value: "jabar", label: "Jawa Barat" },
-                      { value: "jateng", label: "Jawa Tengah" },
-                    ]}
+                    options={provinceOptions}
                     value={lokasiPelaporan}
                     onChange={(e) => setLokasiPelaporan(e.target.value)}
                   />
@@ -158,15 +189,23 @@ export default function TambahKasusPage() {
                   <Select
                     id="sumber"
                     placeholder="Pilih sumber"
-                    options={[
+                    options={withOther([
                       { value: "korban", label: "Korban Langsung" },
                       { value: "keluarga", label: "Keluarga" },
                       { value: "masyarakat", label: "Masyarakat" },
                       { value: "institusi", label: "Institusi" },
-                    ]}
+                    ])}
                     value={sumber}
                     onChange={(e) => setSumber(e.target.value)}
                   />
+                  {sumber === OTHER && (
+                    <Input
+                      placeholder="Ketik sumber informasi..."
+                      value={sumberLain}
+                      onChange={(e) => setSumberLain(e.target.value)}
+                      className="mt-1"
+                    />
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="urgensi">Tingkat Urgensi</Label>
@@ -209,14 +248,18 @@ export default function TambahKasusPage() {
                   <Select
                     id="lokasi_kejadian"
                     placeholder="Pilih lokasi"
-                    options={[
-                      { value: "jakarta", label: "Jakarta" },
-                      { value: "jabar", label: "Jawa Barat" },
-                      { value: "jateng", label: "Jawa Tengah" },
-                    ]}
+                    options={withOther(provinceOptions)}
                     value={lokasiKejadian}
                     onChange={(e) => setLokasiKejadian(e.target.value)}
                   />
+                  {lokasiKejadian === OTHER && (
+                    <Input
+                      placeholder="Ketik lokasi kejadian..."
+                      value={lokasiKejadianLain}
+                      onChange={(e) => setLokasiKejadianLain(e.target.value)}
+                      className="mt-1"
+                    />
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="setting_kejadian">Setting/Tempat Kejadian</Label>
@@ -465,16 +508,24 @@ export default function TambahKasusPage() {
                   <Select
                     id="penyedia_layanan"
                     placeholder="Pilih penyedia"
-                    options={[
+                    options={withOther([
                       { value: "upt", label: "UPT P2TP2A" },
                       { value: "puskesmas", label: "Puskesmas" },
                       { value: "rs", label: "Rumah Sakit" },
                       { value: "polres", label: "Polres" },
                       { value: "lpsm", label: "LPSM" },
-                    ]}
+                    ])}
                     value={penyediaLayanan}
                     onChange={(e) => setPenyediaLayanan(e.target.value)}
                   />
+                  {penyediaLayanan === OTHER && (
+                    <Input
+                      placeholder="Ketik nama penyedia layanan..."
+                      value={penyediaLayananLain}
+                      onChange={(e) => setPenyediaLayananLain(e.target.value)}
+                      className="mt-1"
+                    />
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="kebutuhan_rujukan">Kebutuhan Rujukan</Label>

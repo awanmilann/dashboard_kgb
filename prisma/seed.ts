@@ -204,124 +204,64 @@ async function main() {
     },
   })
 
-  const provinces = await Promise.all([
-    prisma.location.create({
-      data: {
-        parent_id: indonesia.id,
-        location_level: 1,
-        location_code: "ID-JB",
-        name: "Jawa Barat",
-        latitude: -6.9147,
-        longitude: 107.6098,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: indonesia.id,
-        location_level: 1,
-        location_code: "ID-JK",
-        name: "DKI Jakarta",
-        latitude: -6.2088,
-        longitude: 106.8456,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: indonesia.id,
-        location_level: 1,
-        location_code: "ID-JT",
-        name: "Jawa Tengah",
-        latitude: -7.1509,
-        longitude: 110.1403,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: indonesia.id,
-        location_level: 1,
-        location_code: "ID-JI",
-        name: "Jawa Timur",
-        latitude: -7.5361,
-        longitude: 112.2384,
-        is_active: true,
-      },
-    }),
-  ])
+  const allProvinces = [
+    { code: "ID-AC", name: "Aceh", lat: 4.6951, lng: 96.7494 },
+    { code: "ID-SU", name: "Sumatera Utara", lat: 2.1154, lng: 99.5451 },
+    { code: "ID-SB", name: "Sumatera Barat", lat: -0.7399, lng: 100.8000 },
+    { code: "ID-RI", name: "Riau", lat: 0.2933, lng: 101.7068 },
+    { code: "ID-KR", name: "Kepulauan Riau", lat: 0.8700, lng: 104.4200 },
+    { code: "ID-JA", name: "Jambi", lat: -1.4852, lng: 102.4381 },
+    { code: "ID-SS", name: "Sumatera Selatan", lat: -3.3194, lng: 103.9144 },
+    { code: "ID-BB", name: "Bangka Belitung", lat: -2.7411, lng: 106.4406 },
+    { code: "ID-BE", name: "Bengkulu", lat: -3.7928, lng: 102.2608 },
+    { code: "ID-LA", name: "Lampung", lat: -4.5586, lng: 105.4068 },
+    { code: "ID-BT", name: "Banten", lat: -6.4058, lng: 106.0640 },
+    { code: "ID-JK", name: "DKI Jakarta", lat: -6.2088, lng: 106.8456 },
+    { code: "ID-JB", name: "Jawa Barat", lat: -6.9147, lng: 107.6098 },
+    { code: "ID-JT", name: "Jawa Tengah", lat: -7.1509, lng: 110.1403 },
+    { code: "ID-YO", name: "DI Yogyakarta", lat: -7.7956, lng: 110.3695 },
+    { code: "ID-JI", name: "Jawa Timur", lat: -7.5361, lng: 112.2384 },
+    { code: "ID-BA", name: "Bali", lat: -8.4095, lng: 115.1889 },
+    { code: "ID-NB", name: "Nusa Tenggara Barat", lat: -8.6529, lng: 117.3616 },
+    { code: "ID-NT", name: "Nusa Tenggara Timur", lat: -8.6539, lng: 121.0755 },
+    { code: "ID-KB", name: "Kalimantan Barat", lat: -0.2788, lng: 111.4753 },
+    { code: "ID-KT", name: "Kalimantan Tengah", lat: -1.6815, lng: 113.3824 },
+    { code: "ID-KS", name: "Kalimantan Selatan", lat: -3.0926, lng: 115.2838 },
+    { code: "ID-KI", name: "Kalimantan Timur", lat: 1.6406, lng: 116.4194 },
+    { code: "ID-KU", name: "Kalimantan Utara", lat: 2.7259, lng: 116.9110 },
+    { code: "ID-SA", name: "Sulawesi Utara", lat: 1.4888, lng: 124.8401 },
+    { code: "ID-ST", name: "Sulawesi Tengah", lat: -1.4300, lng: 121.4456 },
+    { code: "ID-SR", name: "Sulawesi Barat", lat: -2.8441, lng: 119.2321 },
+    { code: "ID-SN", name: "Sulawesi Selatan", lat: -4.3105, lng: 120.2092 },
+    { code: "ID-SG", name: "Sulawesi Tenggara", lat: -4.1449, lng: 122.1746 },
+    { code: "ID-GO", name: "Gorontalo", lat: 0.5435, lng: 123.0568 },
+    { code: "ID-MA", name: "Maluku", lat: -3.2385, lng: 130.1453 },
+    { code: "ID-MU", name: "Maluku Utara", lat: 1.5700, lng: 127.8088 },
+    { code: "ID-PB", name: "Papua Barat", lat: -1.3361, lng: 133.1747 },
+    { code: "ID-PD", name: "Papua Barat Daya", lat: -0.8700, lng: 131.2500 },
+    { code: "ID-PA", name: "Papua", lat: -4.2699, lng: 138.0804 },
+    { code: "ID-PT", name: "Papua Tengah", lat: -3.6000, lng: 136.0000 },
+    { code: "ID-PE", name: "Papua Pegunungan", lat: -4.0000, lng: 139.0000 },
+    { code: "ID-PS", name: "Papua Selatan", lat: -6.5000, lng: 140.3000 },
+  ]
 
-  // Some sample cities/districts
-  await Promise.all([
-    prisma.location.create({
-      data: {
-        parent_id: provinces[0].id,
-        location_level: 2,
-        location_code: "ID-KB",
-        name: "Kota Bandung",
-        latitude: -6.9175,
-        longitude: 107.6191,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: provinces[0].id,
-        location_level: 2,
-        location_code: "ID-BE",
-        name: "Kabupaten Bekasi",
-        latitude: -6.2383,
-        longitude: 106.9916,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: provinces[1].id,
-        location_level: 2,
-        location_code: "ID-JS",
-        name: "Jakarta Selatan",
-        latitude: -6.2615,
-        longitude: 106.8101,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: provinces[1].id,
-        location_level: 2,
-        location_code: "ID-JU",
-        name: "Jakarta Utara",
-        latitude: -6.1377,
-        longitude: 106.8263,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: provinces[2].id,
-        location_level: 2,
-        location_code: "ID-SM",
-        name: "Kota Semarang",
-        latitude: -6.9932,
-        longitude: 110.4203,
-        is_active: true,
-      },
-    }),
-    prisma.location.create({
-      data: {
-        parent_id: provinces[3].id,
-        location_level: 2,
-        location_code: "ID-SB",
-        name: "Kota Surabaya",
-        latitude: -7.2575,
-        longitude: 112.7521,
-        is_active: true,
-      },
-    }),
-  ])
+  const provinces = await Promise.all(
+    allProvinces.map((p) =>
+      prisma.location.create({
+        data: {
+          parent_id: indonesia.id,
+          location_level: 1,
+          location_code: p.code,
+          name: p.name,
+          latitude: p.lat,
+          longitude: p.lng,
+          is_active: true,
+        },
+      })
+    )
+  )
 
-  console.log("Created locations (Indonesia, provinces, cities)")
+  console.log(`Created ${provinces.length} provinces`)
 
   console.log("")
   console.log("=== SEED COMPLETED ===")
