@@ -130,7 +130,7 @@ export function TopNavbar() {
           {notifOpen && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setNotifOpen(false)} />
-              <div className="absolute right-0 top-full mt-1 w-80 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg z-20 py-2 max-h-96 overflow-y-auto">
+              <div className="absolute right-0 top-full mt-1 w-80 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg z-20 py-2 max-h-96 overflow-y-auto dropdown-scroll">
                 <p className="px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                   <span>Notifikasi</span>
                   {unreadCount > 0 && (
