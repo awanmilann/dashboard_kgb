@@ -53,3 +53,56 @@ export interface ApiResponse<T = unknown> {
   error?: string
   message?: string
 }
+
+export interface NotificationItem {
+  id: string
+  user_id: string
+  title: string
+  message: string | null
+  notification_type: string
+  related_entity_type: string | null
+  related_entity_id: string | null
+  is_read: boolean
+  created_at: string
+  read_at: string | null
+}
+
+export interface UatFeedbackItem {
+  id: string
+  user_id: string | null
+  page_url: string
+  rating: number
+  feedback_text: string | null
+  category: string | null
+  browser_info: string | null
+  created_at: string
+  user?: { full_name: string }
+}
+
+export interface DashboardSummary {
+  total: number
+  verified: number
+  in_progress: number
+  high_risk: number
+  no_referral: number
+  pending_verification: number
+  by_status: { case_status: string; _count: number }[]
+  by_verification_status: { verification_status: string; _count: number }[]
+}
+
+export interface ChartData {
+  monthly: { month: string; count: number }[]
+  violence_types: { name: string; value: number }[]
+  status: { name: string; value: number }[]
+  locations: { name: string; total: number; verified: number; high_risk: number }[]
+}
+
+export interface MapDataPoint {
+  id: string
+  name: string
+  latitude: number
+  longitude: number
+  total: number
+  high_risk: number
+  intensity: number
+}

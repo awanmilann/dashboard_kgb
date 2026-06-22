@@ -54,6 +54,8 @@ model User {
   referrals                Referral[]               @relation("ReferredBy")
   audit_logs               AuditLog[]
   data_export_logs         DataExportLog[]
+  notifications            Notification[]
+  uat_feedback             UatFeedback[]
 
   @@map("users")
 }
@@ -420,4 +422,38 @@ model DataExportLog {
   requested_by_user User? @relation(fields: [requested_by], references: [id])
 
   @@map("data_export_logs")
+}
+
+model Notification {
+  id                  String   @id @default(uuid()) @db.Uuid
+  user_id             String   @db.Uuid
+  title               String
+  message             String?
+  notification_type   String
+  related_entity_type String?
+  related_entity_id   String?
+  is_read             Boolean  @default(false)
+  created_at          DateTime @default(now())
+  read_at             DateTime?
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, is_read])
+  @@index([created_at])
+  @@map("notifications")
+}
+
+model UatFeedback {
+  id          String   @id @default(uuid()) @db.Uuid
+  user_id     String?  @db.Uuid
+  page_url    String
+  rating      Int
+  feedback_text String?
+  category    String?
+  browser_info String?
+  created_at  DateTime @default(now())
+
+  user User? @relation(fields: [user_id], references: [id])
+
+  @@map("uat_feedback")
 }

@@ -24,6 +24,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Menu,
+  ThumbsUp,
 } from "lucide-react"
 import { useState } from "react"
 import { signOut } from "next-auth/react"
@@ -97,6 +98,7 @@ const menuItems: MenuSection[] = [
     section: "Akun",
     items: [
       { href: "/profil", label: "Profil", icon: UserCircle },
+      { href: "/uat", label: "UAT Feedback", icon: ThumbsUp },
     ],
   },
 ]
