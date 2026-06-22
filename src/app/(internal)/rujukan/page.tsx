@@ -40,15 +40,28 @@ export default function RujukanPage() {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<Rujukan[]>([])
   const [summary, setSummary] = useState<any>(null)
+  const [serviceTypes, setServiceTypes] = useState<{ value: string; label: string }[]>([])
 
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/api/referrals")
-        const result = await res.json()
-        if (result.success) {
-          setData(result.data || [])
-          setSummary(result.summary)
+        const [refRes, stRes] = await Promise.all([
+          fetch("/api/referrals"),
+          fetch("/api/master/service-types"),
+        ])
+        const refResult = await refRes.json()
+        if (refResult.success) {
+          setData(refResult.data || [])
+          setSummary(refResult.summary)
+        }
+        const stResult = await stRes.json()
+        if (stResult.success) {
+          setServiceTypes(
+            stResult.data.map((st: { id: string; name: string }) => ({
+              value: st.id,
+              label: st.name,
+            }))
+          )
         }
       } catch (e) {
         console.error(e)
@@ -58,6 +71,11 @@ export default function RujukanPage() {
     }
     load()
   }, [])
+
+  const statusOptions = Object.entries(statusBadge).map(([value, { label }]) => ({
+    value,
+    label,
+  }))
 
   const columns: ColumnDef<Rujukan>[] = [
     { accessorKey: "case_number", header: "ID Kasus" },
@@ -105,8 +123,8 @@ export default function RujukanPage() {
         onSearchChange={setSearch}
         searchPlaceholder="Cari kasus..."
         filters={[
-          { key: "status", label: "Status", options: [], value: status, onChange: setStatus },
-          { key: "jenis_layanan", label: "Jenis Layanan", options: [], value: jenisLayanan, onChange: setJenisLayanan },
+          { key: "status", label: "Status", options: statusOptions, value: status, onChange: setStatus },
+          { key: "jenis_layanan", label: "Jenis Layanan", options: serviceTypes, value: jenisLayanan, onChange: setJenisLayanan },
         ]}
         onReset={() => { setSearch(""); setStatus(""); setJenisLayanan("") }}
       />
