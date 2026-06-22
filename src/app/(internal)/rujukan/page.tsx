@@ -72,10 +72,13 @@ export default function RujukanPage() {
     load()
   }, [])
 
-  const statusOptions = Object.entries(statusBadge).map(([value, { label }]) => ({
-    value,
-    label,
-  }))
+  const statusOptions = [
+    { value: "PENDING", label: "Menunggu" },
+    { value: "IN_PROGRESS", label: "Diproses" },
+    { value: "COMPLETED", label: "Selesai" },
+    { value: "REJECTED", label: "Ditolak" },
+    { value: "CANCELLED", label: "Dibatalkan" },
+  ]
 
   const columns: ColumnDef<Rujukan>[] = [
     { accessorKey: "case_number", header: "ID Kasus" },
