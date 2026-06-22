@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils/cn"
 
@@ -9,6 +10,7 @@ interface KpiCardProps {
   description?: string
   icon?: React.ReactNode
   variant?: "default" | "purple" | "green" | "red" | "yellow" | "blue"
+  href?: string
   trend?: {
     value: string
     positive: boolean
@@ -39,10 +41,11 @@ export function KpiCard({
   description,
   icon,
   variant = "default",
+  href,
   trend,
 }: KpiCardProps) {
-  return (
-    <Card className={cn(variantStyles[variant])}>
+  const card = (
+    <Card className={cn(variantStyles[variant], href && "cursor-pointer hover:shadow-md transition-shadow")}>
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
@@ -73,4 +76,10 @@ export function KpiCard({
       </CardContent>
     </Card>
   )
+
+  if (href) {
+    return <Link href={href}>{card}</Link>
+  }
+
+  return card
 }

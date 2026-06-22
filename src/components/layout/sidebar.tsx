@@ -106,12 +106,6 @@ export function AppSidebar() {
 
   return (
     <>
-      <button
-        className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-md bg-white border shadow-sm"
-        onClick={() => setCollapsed(!collapsed)}
-      >
-        <Menu className="h-5 w-5" />
-      </button>
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-40 flex flex-col bg-white border-r border-gray-200 transition-all duration-300",
@@ -136,12 +130,6 @@ export function AppSidebar() {
                   Dashboard Pemantauan
                 </p>
               </div>
-              <button
-                onClick={() => setCollapsed(true)}
-                className="ml-auto p-1 hover:bg-gray-100 rounded hidden lg:block"
-              >
-                <ChevronLeft className="h-4 w-4 text-gray-500" />
-              </button>
             </div>
           )}
         </div>
@@ -190,30 +178,37 @@ export function AppSidebar() {
           ))}
         </nav>
 
-        {!collapsed && (
-          <div className="p-3 border-t border-gray-200">
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-gray-600 hover:text-red-600"
-              onClick={() => signOut({ callbackUrl: "/login" })}
-            >
-              <LogOut className="h-5 w-5 mr-2" />
-              Keluar
-            </Button>
-          </div>
-        )}
-
-        {collapsed && (
-          <div className="p-3 border-t border-gray-200 flex justify-center">
-            <button
-              onClick={() => setCollapsed(false)}
-              className="p-2 hover:bg-gray-100 rounded"
-            >
-              <ChevronRight className="h-4 w-4 text-gray-500" />
-            </button>
-          </div>
-        )}
+        <div className="p-3 border-t border-gray-200">
+          <Button
+            variant="ghost"
+            className={cn(
+              "text-gray-600 hover:text-red-600",
+              collapsed ? "w-full flex justify-center px-2" : "w-full justify-start"
+            )}
+            onClick={() => signOut({ callbackUrl: "/login" })}
+            title={collapsed ? "Keluar" : undefined}
+          >
+            <LogOut className="h-5 w-5" />
+            {!collapsed && <span className="ml-2">Keluar</span>}
+          </Button>
+        </div>
       </aside>
+
+      <button
+        className={cn(
+          "fixed z-50 p-2 rounded-md bg-white border shadow-sm transition-all duration-300",
+          collapsed
+            ? "top-4 left-4"
+            : "top-4 left-[260px] hidden lg:flex"
+        )}
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        {collapsed ? (
+          <Menu className="h-5 w-5" />
+        ) : (
+          <ChevronLeft className="h-4 w-4 text-gray-500" />
+        )}
+      </button>
     </>
   )
 }

@@ -40,6 +40,7 @@ export function TopNavbar() {
   const { data: session } = useSession()
   const { theme, setTheme } = useTheme()
   const [profileOpen, setProfileOpen] = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
 
   const breadcrumbs = getBreadcrumbs(pathname)
 
@@ -68,10 +69,29 @@ export function TopNavbar() {
       </div>
 
       <div className="ml-auto flex items-center gap-3">
-        <button className="relative p-2 rounded-md hover:bg-gray-100 text-gray-500">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => setNotifOpen(!notifOpen)}
+            className="relative p-2 rounded-md hover:bg-gray-100 text-gray-500"
+          >
+            <Bell className="h-5 w-5" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
+          </button>
+
+          {notifOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setNotifOpen(false)} />
+              <div className="absolute right-0 top-full mt-1 w-72 bg-white rounded-md border shadow-lg z-20 py-2">
+                <p className="px-4 py-2 text-sm font-semibold text-gray-900 border-b">
+                  Notifikasi
+                </p>
+                <div className="py-6 text-center text-sm text-gray-500">
+                  Belum ada notifikasi.
+                </div>
+              </div>
+            </>
+          )}
+        </div>
 
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

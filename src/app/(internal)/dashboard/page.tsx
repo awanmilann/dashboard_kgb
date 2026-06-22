@@ -16,12 +16,12 @@ export default function DashboardPage() {
   const [jenisKekerasan, setJenisKekerasan] = useState("")
 
   const kpiData = [
-    { title: "Total Kasus", value: 0, icon: <BarChart3 className="h-5 w-5" />, variant: "purple" as const },
-    { title: "Terverifikasi", value: 0, icon: <CheckCircle className="h-5 w-5" />, variant: "green" as const },
-    { title: "Dalam Penanganan", value: 0, icon: <Clock className="h-5 w-5" />, variant: "blue" as const },
-    { title: "Risiko Tinggi", value: 0, icon: <AlertTriangle className="h-5 w-5" />, variant: "red" as const },
-    { title: "Belum Dirujuk", value: 0, icon: <XCircle className="h-5 w-5" />, variant: "yellow" as const },
-    { title: "Belum Diverifikasi", value: 0, icon: <FileSearch className="h-5 w-5" />, variant: "yellow" as const },
+    { title: "Total Kasus", value: 0, icon: <BarChart3 className="h-5 w-5" />, variant: "purple" as const, href: "/kasus" },
+    { title: "Terverifikasi", value: 0, icon: <CheckCircle className="h-5 w-5" />, variant: "green" as const, href: "/verifikasi" },
+    { title: "Dalam Penanganan", value: 0, icon: <Clock className="h-5 w-5" />, variant: "blue" as const, href: "/kasus" },
+    { title: "Risiko Tinggi", value: 0, icon: <AlertTriangle className="h-5 w-5" />, variant: "red" as const, href: "/kasus" },
+    { title: "Belum Dirujuk", value: 0, icon: <XCircle className="h-5 w-5" />, variant: "yellow" as const, href: "/rujukan" },
+    { title: "Belum Diverifikasi", value: 0, icon: <FileSearch className="h-5 w-5" />, variant: "yellow" as const, href: "/verifikasi" },
   ]
 
   const filterOptions = [
@@ -59,7 +59,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {kpiData.map((kpi) => (
-          <KpiCard key={kpi.title} title={kpi.title} value={kpi.value} icon={kpi.icon} variant={kpi.variant} />
+          <KpiCard key={kpi.title} title={kpi.title} value={kpi.value} icon={kpi.icon} variant={kpi.variant} href={kpi.href} />
         ))}
       </div>
 

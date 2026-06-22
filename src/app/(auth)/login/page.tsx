@@ -64,7 +64,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@kapalperempuan.local"
+                placeholder="Masukkan email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -115,20 +115,6 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-6 p-3 rounded-md bg-gray-50 border">
-            <p className="text-xs text-gray-500 font-medium mb-1">
-              Akun Development:
-            </p>
-            <p className="text-xs text-gray-500">
-              Email: admin@kapalperempuan.local
-            </p>
-            <p className="text-xs text-gray-500">
-              Password: Admin123!
-            </p>
-            <p className="text-xs text-gray-400 mt-1">
-              *Ganti password sebelum production
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
