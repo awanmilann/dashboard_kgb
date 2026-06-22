@@ -1,8 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useSession } from "next-auth/react"
-import { Button } from "@/components/ui/button"
+import { useSession, signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
 import { Sun, Moon, Bell, User, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
@@ -161,7 +160,7 @@ export function TopNavbar() {
                   className="block w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                   onClick={() => {
                     setProfileOpen(false)
-                    window.location.href = "/api/auth/signout"
+                    signOut({ callbackUrl: "/login" })
                   }}
                 >
                   Keluar

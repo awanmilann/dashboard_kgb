@@ -111,16 +111,16 @@ export function AppSidebar() {
     <>
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex flex-col bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 transition-all duration-300",
+          "fixed inset-y-0 left-0 z-40 flex flex-col bg-[#0d0a14] border-r border-purple-900/20 transition-all duration-300",
           collapsed ? "-translate-x-full lg:translate-x-0 lg:w-16" : "translate-x-0 w-64"
         )}
       >
         <div className={cn(
-          "flex items-center h-16 border-b border-gray-200 dark:border-gray-800",
+          "flex items-center h-16 border-b border-purple-900/20",
           collapsed ? "justify-center px-2" : "px-4"
         )}>
           <div className={cn("flex items-center gap-3", collapsed ? "justify-center" : "flex-1 min-w-0")}>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-lg shadow-purple-600/20">
               {orgLogo ? (
                 <img src={orgLogo} alt="" className="w-full h-full object-cover" />
               ) : (
@@ -129,10 +129,10 @@ export function AppSidebar() {
             </div>
             {!collapsed && (
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                <p className="text-sm font-semibold text-purple-100 truncate">
                   KBG & TPKS
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                <p className="text-xs text-purple-300/60 truncate">
                   Dashboard Pemantauan
                 </p>
               </div>
@@ -141,19 +141,19 @@ export function AppSidebar() {
           {!collapsed && (
             <button
               onClick={() => setCollapsed(true)}
-              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded shrink-0 ml-2"
+              className="p-1.5 hover:bg-purple-900/30 rounded shrink-0 ml-2 transition-colors"
               title="Perkecil sidebar"
             >
-              <ChevronLeft className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <ChevronLeft className="h-4 w-4 text-purple-400" />
             </button>
           )}
         </div>
 
-        <nav className="flex-1 overflow-y-auto p-3 space-y-4">
+        <nav className="flex-1 overflow-y-auto p-3 space-y-4 scrollbar-thin scrollbar-thumb-purple-900/30">
           {menuItems.map((section) => (
             <div key={section.section}>
               {!collapsed && (
-                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-3 mb-2">
+                <p className="text-xs font-semibold text-purple-400/50 uppercase tracking-wider px-3 mb-2">
                   {section.section}
                 </p>
               )}
@@ -166,11 +166,11 @@ export function AppSidebar() {
                       key={item.href}
                       href={item.href}
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors",
+                        "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all duration-200",
                         isActive
-                          ? "bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-medium"
-                          : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200",
-                        collapsed && "justify-center px-2"
+                          ? "bg-purple-600/20 text-purple-300 font-medium border-l-2 border-purple-500"
+                          : "text-purple-300/60 hover:text-purple-200 hover:bg-purple-900/20 border-l-2 border-transparent",
+                        collapsed && "justify-center px-2 border-l-0"
                       )}
                       title={collapsed ? item.label : undefined}
                     >
@@ -193,11 +193,11 @@ export function AppSidebar() {
           ))}
         </nav>
 
-        <div className="p-3 border-t border-gray-200 dark:border-gray-800">
+        <div className="p-3 border-t border-purple-900/20">
           <Button
             variant="ghost"
             className={cn(
-              "text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400",
+              "text-purple-300/60 hover:text-red-400 hover:bg-red-950/30",
               collapsed ? "w-full flex justify-center px-2" : "w-full justify-start"
             )}
             onClick={() => signOut({ callbackUrl: "/login" })}
@@ -212,19 +212,19 @@ export function AppSidebar() {
       {collapsed && (
         <button
           onClick={() => setCollapsed(false)}
-          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm lg:flex hidden"
+          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-[#0d0a14] border border-purple-900/40 shadow-lg lg:flex hidden hover:bg-purple-900/30 transition-colors"
           title="Perbesar sidebar"
         >
-          <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <ChevronRight className="h-4 w-4 text-purple-400" />
         </button>
       )}
       {collapsed && (
         <button
           onClick={() => setCollapsed(false)}
-          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm lg:hidden"
+          className="fixed top-4 left-4 z-50 p-2 rounded-md bg-[#0d0a14] border border-purple-900/40 shadow-lg lg:hidden hover:bg-purple-900/30 transition-colors"
           title="Buka menu"
         >
-          <Menu className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          <Menu className="h-5 w-5 text-purple-300" />
         </button>
       )}
     </>
