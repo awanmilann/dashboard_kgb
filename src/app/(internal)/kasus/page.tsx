@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { PageHeader } from "@/components/shared/page-header"
@@ -108,53 +108,20 @@ export default function KasusPage() {
   const [organisasi, setOrganisasi] = useState("")
   const [organisasiLain, setOrganisasiLain] = useState("")
 
-  const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([])
-  const [vtOptions, setVtOptions] = useState<{ value: string; label: string }[]>([])
-  const [orgOptions, setOrgOptions] = useState<{ value: string; label: string }[]>([])
-
-  useEffect(() => {
-    async function loadOptions() {
-      try {
-        const [locRes, vtRes, orgRes] = await Promise.all([
-          fetch("/api/master/locations"),
-          fetch("/api/master/violence-types"),
-          fetch("/api/organizations"),
-        ])
-        const locData = await locRes.json()
-        const vtData = await vtRes.json()
-        const orgData = await orgRes.json()
-        if (locData.success) {
-          setLocationOptions(
-            (locData.data || []).map((l: any) => ({ value: l.id, label: l.name }))
-          )
-        } else {
-          setLocationOptions(PROVINSI.map((p) => ({ value: p, label: p })))
-        }
-        if (vtData.success) {
-          setVtOptions(
-            (vtData.data || []).map((v: any) => ({ value: v.id, label: v.name }))
-          )
-        } else {
-          setVtOptions(JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j })))
-        }
-        if (orgData.success) {
-          setOrgOptions(
-            (orgData.data || []).map((o: any) => ({ value: o.id, label: o.name }))
-          )
-        }
-      } catch (e) {
-        console.error("Gagal memuat data referensi:", e)
-        setLocationOptions(PROVINSI.map((p) => ({ value: p, label: p })))
-        setVtOptions(JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j })))
-      }
-    }
-    loadOptions()
-  }, [])
-
   const periodeOptions = [
     { value: "2026", label: "2026" },
     { value: "2025", label: "2025" },
     { value: "2024", label: "2024" },
+  ]
+
+  const locationOptions = PROVINSI.map((p) => ({ value: p.toLowerCase().replace(/\s+/g, "_"), label: p }))
+
+  const vtOptions = JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j }))
+
+  const orgOptions = [
+    { value: "upt_p2tp2a", label: "UPT P2TP2A" },
+    { value: "dinas", label: "Dinas Sosial" },
+    { value: "puskesmas", label: "Puskesmas" },
   ]
 
   const orgOptionsWithOther = [...orgOptions, { value: OTHER, label: "Lainnya (isi manual)" }]
