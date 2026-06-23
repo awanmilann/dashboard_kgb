@@ -55,22 +55,22 @@ export default function LoginPage() {
             Kembali ke Beranda
           </Link>
         </div>
-        <Card className="w-full border border-gray-200/60 dark:border-gray-700/60 shadow-xl shadow-purple-900/5 dark:shadow-purple-900/20 backdrop-blur-sm bg-white/95 dark:bg-gray-950/95">
+        <Card className="w-full border-border/60 shadow-xl shadow-purple-900/5 dark:shadow-purple-900/20 backdrop-blur-sm bg-card/95">
           <CardHeader className="text-center pb-4">
             <div className="flex justify-center mb-4">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-600/20">
                 <span className="text-white font-bold text-xl">K</span>
               </div>
             </div>
-            <CardTitle className="text-xl text-gray-900 dark:text-gray-100">Masuk ke Dashboard</CardTitle>
-            <CardDescription className="text-gray-500 dark:text-gray-400">
+            <CardTitle className="text-xl">Masuk ke Dashboard</CardTitle>
+            <CardDescription>
               Dashboard Pemantauan KBG & TPKS
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -79,11 +79,11 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  className="h-10 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500/20"
+                  className="h-10 rounded-lg focus:ring-2 focus:ring-purple-500/20"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium text-gray-700 dark:text-gray-300">Password</Label>
+                <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -93,7 +93,7 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     autoComplete="current-password"
-                    className="h-10 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-500/20 pr-10"
+                    className="h-10 rounded-lg focus:ring-2 focus:ring-purple-500/20 pr-10"
                   />
                   <button
                     type="button"
