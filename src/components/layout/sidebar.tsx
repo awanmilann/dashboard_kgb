@@ -25,6 +25,7 @@ import {
   ChevronRight,
   Menu,
   ThumbsUp,
+  BookOpen,
 } from "lucide-react"
 import { useState } from "react"
 import { signOut } from "next-auth/react"
@@ -57,6 +58,12 @@ const menuItems: MenuSection[] = [
       { href: "/rujukan", label: "Rujukan & Layanan", icon: GitBranch },
       { href: "/peta", label: "Peta Persebaran", icon: Map },
       { href: "/laporan", label: "Laporan", icon: BarChart3 },
+    ],
+  },
+  {
+    section: "Referensi",
+    items: [
+      { href: "/indikator-global", label: "Indikator Global VP", icon: BookOpen },
     ],
   },
   {
