@@ -6,61 +6,65 @@ export const dynamic = "force-dynamic"
 
 export async function GET() {
   try {
-    const userCount = await prisma.user.count()
-    
-    // Test simple query
-    const user = await prisma.user.findUnique({
-      where: { email: "admin@kapalperempuan.local" },
-      select: { id: true, email: true, full_name: true, password_hash: true },
-    })
+    // --- Exact replica of authorize function ---
+    const email = "admin@kapalperempuan.local"
+    const password = "Admin123!"
 
-    let bcryptResult = "not_tested"
-    if (user) {
-      const isValid = await bcrypt.compare("Admin123!", user.password_hash)
-      bcryptResult = isValid ? "valid" : "invalid"
+    if (!email || !password) {
+      return NextResponse.json({ step: "validation", passed: false, reason: "missing credentials" })
     }
 
-    // Test full include query (same as jwt callback)
-    let includeResult = "not_tested"
-    if (user) {
-      try {
-        const fullUser = await prisma.user.findUnique({
-          where: { id: user.id },
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        organization: true,
+        user_roles: {
           include: {
-            organization: true,
-            user_roles: {
+            role: {
               include: {
-                role: {
+                role_permissions: {
                   include: {
-                    role_permissions: {
-                      include: {
-                        permission: true,
-                      },
-                    },
+                    permission: true,
                   },
                 },
               },
             },
           },
-        })
-        includeResult = fullUser ? "found" : "not_found"
-      } catch (e) {
-        includeResult = "error: " + (e instanceof Error ? e.message : "unknown")
-      }
+        },
+      },
+    })
+
+    if (!user || !user.is_active) {
+      return NextResponse.json({
+        step: "user_check",
+        passed: false,
+        userFound: !!user,
+        isActive: user?.is_active ?? null,
+      })
     }
 
-    return NextResponse.json({
-      success: true,
-      database: "connected",
-      userCount,
-      userFound: !!user,
-      bcryptResult,
-      includeResult,
+    const isValid = await bcrypt.compare(password, user.password_hash)
+    if (!isValid) {
+      return NextResponse.json({ step: "password", passed: false })
+    }
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { last_login_at: new Date() },
     })
+
+    return NextResponse.json({
+      step: "success",
+      passed: true,
+      user: { id: user.id, email: user.email, name: user.full_name },
+    })
+    // --- End of replica ---
   } catch (error) {
     return NextResponse.json({
-      success: false,
+      step: "error",
+      passed: false,
       error: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
     }, { status: 500 })
   }
 }
