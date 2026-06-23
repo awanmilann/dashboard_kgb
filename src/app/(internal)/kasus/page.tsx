@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { PageHeader } from "@/components/shared/page-header"
 import { FilterBar } from "@/components/shared/filter-bar"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { DataTable } from "@/components/tables/data-table"
 import { CaseStatusBadge, VerificationStatusBadge, RiskBadge } from "@/components/shared/status-badge"
 import { type ColumnDef } from "@tanstack/react-table"
@@ -95,6 +96,8 @@ const columns: ColumnDef<Kasus>[] = [
   },
 ]
 
+  const OTHER = "__other__"
+
 export default function KasusPage() {
   const [search, setSearch] = useState("")
   const [periode, setPeriode] = useState("")
@@ -102,15 +105,59 @@ export default function KasusPage() {
   const [status, setStatus] = useState("")
   const [jenisKekerasan, setJenisKekerasan] = useState("")
   const [statusVerifikasi, setStatusVerifikasi] = useState("")
+  const [organisasi, setOrganisasi] = useState("")
+  const [organisasiLain, setOrganisasiLain] = useState("")
 
-  const locationOptions = PROVINSI.map((p) => ({ value: p, label: p }))
-  const vtOptions = JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j }))
+  const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([])
+  const [vtOptions, setVtOptions] = useState<{ value: string; label: string }[]>([])
+  const [orgOptions, setOrgOptions] = useState<{ value: string; label: string }[]>([])
+
+  useEffect(() => {
+    async function loadOptions() {
+      try {
+        const [locRes, vtRes, orgRes] = await Promise.all([
+          fetch("/api/master/locations"),
+          fetch("/api/master/violence-types"),
+          fetch("/api/organizations"),
+        ])
+        const locData = await locRes.json()
+        const vtData = await vtRes.json()
+        const orgData = await orgRes.json()
+        if (locData.success) {
+          setLocationOptions(
+            (locData.data || []).map((l: any) => ({ value: l.id, label: l.name }))
+          )
+        } else {
+          setLocationOptions(PROVINSI.map((p) => ({ value: p, label: p })))
+        }
+        if (vtData.success) {
+          setVtOptions(
+            (vtData.data || []).map((v: any) => ({ value: v.id, label: v.name }))
+          )
+        } else {
+          setVtOptions(JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j })))
+        }
+        if (orgData.success) {
+          setOrgOptions(
+            (orgData.data || []).map((o: any) => ({ value: o.id, label: o.name }))
+          )
+        }
+      } catch (e) {
+        console.error("Gagal memuat data referensi:", e)
+        setLocationOptions(PROVINSI.map((p) => ({ value: p, label: p })))
+        setVtOptions(JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j })))
+      }
+    }
+    loadOptions()
+  }, [])
 
   const periodeOptions = [
     { value: "2026", label: "2026" },
     { value: "2025", label: "2025" },
     { value: "2024", label: "2024" },
   ]
+
+  const orgOptionsWithOther = [...orgOptions, { value: OTHER, label: "Lainnya (isi manual)" }]
 
   const statusOptions = [
     { value: "DRAFT", label: "Draft" },
@@ -148,11 +195,22 @@ export default function KasusPage() {
           { key: "periode", label: "Periode", options: periodeOptions, value: periode, onChange: setPeriode },
           { key: "wilayah", label: "Wilayah", options: locationOptions, value: wilayah, onChange: setWilayah },
           { key: "status", label: "Status", options: statusOptions, value: status, onChange: setStatus },
+          { key: "organisasi", label: "Organisasi", options: orgOptionsWithOther, value: organisasi, onChange: setOrganisasi },
           { key: "jenis_kekerasan", label: "Jenis Kekerasan", options: vtOptions, value: jenisKekerasan, onChange: setJenisKekerasan },
           { key: "status_verifikasi", label: "Status Verifikasi", options: verifikasiOptions, value: statusVerifikasi, onChange: setStatusVerifikasi },
         ]}
-        onReset={() => { setSearch(""); setPeriode(""); setWilayah(""); setStatus(""); setJenisKekerasan(""); setStatusVerifikasi("") }}
+        onReset={() => { setSearch(""); setPeriode(""); setWilayah(""); setStatus(""); setOrganisasi(""); setOrganisasiLain(""); setJenisKekerasan(""); setStatusVerifikasi("") }}
       />
+
+      {organisasi === OTHER && (
+        <div className="max-w-xs">
+          <Input
+            placeholder="Ketik nama organisasi..."
+            value={organisasiLain}
+            onChange={(e) => setOrganisasiLain(e.target.value)}
+          />
+        </div>
+      )}
 
       <DataTable
         columns={columns}
