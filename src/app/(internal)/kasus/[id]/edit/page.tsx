@@ -24,6 +24,7 @@ export default function EditKasusPage() {
   const [currentStep, setCurrentStep] = useState(1)
 
   const [organisasi, setOrganisasi] = useState("upt_p2tp2a")
+  const [organisasiLain, setOrganisasiLain] = useState("")
   const [tanggalLapor, setTanggalLapor] = useState("2026-01-15")
   const [lokasiPelaporan, setLokasiPelaporan] = useState("jakarta")
   const [kategori, setKategori] = useState("kbg")
@@ -54,6 +55,13 @@ export default function EditKasusPage() {
   const [penyediaLayanan, setPenyediaLayanan] = useState("upt")
   const [kebutuhanRujukan, setKebutuhanRujukan] = useState("medis")
   const [catatanPenanganan, setCatatanPenanganan] = useState("")
+
+  const OTHER = "__other__"
+
+  const withOther = (opts: { value: string; label: string }[]) => [
+    ...opts,
+    { value: OTHER, label: "Lainnya (isi manual)" },
+  ]
 
   const [setujuKirim, setSetujuKirim] = useState(false)
 
@@ -110,14 +118,23 @@ export default function EditKasusPage() {
                 <Label htmlFor="organisasi">Organisasi Pelapor</Label>
                 <Select
                   id="organisasi"
-                  options={[
+                  placeholder="Pilih organisasi"
+                  options={withOther([
                     { value: "upt_p2tp2a", label: "UPT P2TP2A" },
                     { value: "dinas", label: "Dinas Sosial" },
                     { value: "puskesmas", label: "Puskesmas" },
-                  ]}
+                  ])}
                   value={organisasi}
                   onChange={(e) => setOrganisasi(e.target.value)}
                 />
+                {organisasi === OTHER && (
+                  <Input
+                    placeholder="Ketik nama organisasi..."
+                    value={organisasiLain}
+                    onChange={(e) => setOrganisasiLain(e.target.value)}
+                    className="mt-1"
+                  />
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="tanggal_lapor">Tanggal Lapor</Label>

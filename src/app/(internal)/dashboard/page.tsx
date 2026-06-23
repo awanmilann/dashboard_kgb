@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import Link from "next/link"
 import { PageHeader } from "@/components/shared/page-header"
 import { FilterBar } from "@/components/shared/filter-bar"
@@ -12,12 +12,16 @@ import { StatusChart } from "@/components/charts/status-chart"
 import { LocationBarChart } from "@/components/charts/location-bar-chart"
 import { DashboardMap } from "@/components/shared/dashboard-map"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Plus, BarChart3, CheckCircle, Clock, AlertTriangle, XCircle, FileSearch, Loader2 } from "lucide-react"
 
 export default function DashboardPage() {
+  const OTHER = "__other__"
+
   const [periode, setPeriode] = useState("")
   const [wilayah, setWilayah] = useState("")
   const [organisasi, setOrganisasi] = useState("")
+  const [organisasiLain, setOrganisasiLain] = useState("")
   const [jenisKekerasan, setJenisKekerasan] = useState("")
 
   const [loading, setLoading] = useState(true)
@@ -28,11 +32,16 @@ export default function DashboardPage() {
   const [orgOptions, setOrgOptions] = useState<{ value: string; label: string }[]>([])
   const [vtOptions, setVtOptions] = useState<{ value: string; label: string }[]>([])
 
+  const orgOptionsWithOther = useMemo(
+    () => [...orgOptions, { value: OTHER, label: "Lainnya (isi manual)" }],
+    [orgOptions]
+  )
+
   const buildQuery = useCallback(() => {
     const params = new URLSearchParams()
     if (periode) params.set("periode", periode)
     if (wilayah) params.set("wilayah", wilayah)
-    if (organisasi) params.set("organisasi", organisasi)
+    if (organisasi && organisasi !== OTHER) params.set("organisasi", organisasi)
     if (jenisKekerasan) params.set("jenis_kekerasan", jenisKekerasan)
     return params.toString()
   }, [periode, wilayah, organisasi, jenisKekerasan])
@@ -102,6 +111,7 @@ export default function DashboardPage() {
     setPeriode("")
     setWilayah("")
     setOrganisasi("")
+    setOrganisasiLain("")
     setJenisKekerasan("")
   }
 
@@ -137,11 +147,21 @@ export default function DashboardPage() {
         filters={[
           { key: "periode", label: "Periode", options: periodeOptions, value: periode, onChange: setPeriode },
           { key: "wilayah", label: "Wilayah", options: locationOptions, value: wilayah, onChange: setWilayah },
-          { key: "organisasi", label: "Organisasi", options: orgOptions, value: organisasi, onChange: setOrganisasi },
+          { key: "organisasi", label: "Organisasi", options: orgOptionsWithOther, value: organisasi, onChange: setOrganisasi },
           { key: "jenis_kekerasan", label: "Jenis Kekerasan", options: vtOptions, value: jenisKekerasan, onChange: setJenisKekerasan },
         ]}
         onReset={handleReset}
       />
+
+      {organisasi === OTHER && (
+        <div className="max-w-xs">
+          <Input
+            placeholder="Ketik nama organisasi..."
+            value={organisasiLain}
+            onChange={(e) => setOrganisasiLain(e.target.value)}
+          />
+        </div>
+      )}
 
       {loading ? (
         <div className="flex items-center justify-center py-20">

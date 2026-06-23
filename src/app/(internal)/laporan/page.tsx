@@ -19,10 +19,13 @@ const reportTypes = [
 ]
 
 export default function LaporanPage() {
+  const OTHER = "__other__"
+
   const [selectedType, setSelectedType] = useState("bulanan")
   const [periode, setPeriode] = useState("")
   const [wilayah, setWilayah] = useState("")
   const [organisasi, setOrganisasi] = useState("")
+  const [organisasiLain, setOrganisasiLain] = useState("")
   const [format, setFormat] = useState("pdf")
   const [preview, setPreview] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -54,7 +57,7 @@ export default function LaporanPage() {
       const params = new URLSearchParams()
       if (periode) params.set("periode", periode)
       if (wilayah) params.set("wilayah", wilayah)
-      if (organisasi) params.set("organisasi", organisasi)
+      if (organisasi && organisasi !== OTHER) params.set("organisasi", organisasi)
 
       const res = await fetch(`/api/analytics/dashboard?${params}`)
       const data = await res.json()
@@ -78,7 +81,7 @@ export default function LaporanPage() {
       const params = new URLSearchParams()
       if (periode) params.set("periode", periode)
       if (wilayah) params.set("wilayah", wilayah)
-      if (organisasi) params.set("organisasi", organisasi)
+      if (organisasi && organisasi !== OTHER) params.set("organisasi", organisasi)
 
       const res = await fetch(`/api/analytics/dashboard?${params}`)
       const data = await res.json()
@@ -133,7 +136,7 @@ export default function LaporanPage() {
           period_start: periode ? `${periode}-01-01` : null,
           period_end: periode ? `${periode}-12-31` : null,
           wilayah,
-          organisasi,
+          organisasi: organisasi === OTHER ? null : organisasi,
         }),
       })
     } catch (e) {
@@ -182,7 +185,21 @@ export default function LaporanPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="organisasi">Organisasi</Label>
-                <Select id="organisasi" placeholder="Semua organisasi" options={orgOptions} value={organisasi} onChange={(e) => setOrganisasi(e.target.value)} />
+                <Select
+                  id="organisasi"
+                  placeholder="Semua organisasi"
+                  options={[...orgOptions, { value: OTHER, label: "Lainnya (isi manual)" }]}
+                  value={organisasi}
+                  onChange={(e) => setOrganisasi(e.target.value)}
+                />
+                {organisasi === OTHER && (
+                  <Input
+                    placeholder="Ketik nama organisasi..."
+                    value={organisasiLain}
+                    onChange={(e) => setOrganisasiLain(e.target.value)}
+                    className="mt-1"
+                  />
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="format">Format</Label>

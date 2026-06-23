@@ -38,11 +38,19 @@ const columns: ColumnDef<User>[] = [
 ]
 
 export default function PenggunaPage() {
+  const OTHER = "__other__"
+
+  const withOther = (opts: { value: string; label: string }[]) => [
+    ...opts,
+    { value: OTHER, label: "Lainnya (isi manual)" },
+  ]
+
   const [showForm, setShowForm] = useState(false)
   const [nama, setNama] = useState("")
   const [email, setEmail] = useState("")
   const [role, setRole] = useState("")
   const [organisasi, setOrganisasi] = useState("")
+  const [organisasiLain, setOrganisasiLain] = useState("")
 
   const handleSubmit = () => {
     alert("Pengguna berhasil ditambahkan.")
@@ -51,6 +59,7 @@ export default function PenggunaPage() {
     setEmail("")
     setRole("")
     setOrganisasi("")
+    setOrganisasiLain("")
   }
 
   return (
@@ -107,13 +116,21 @@ export default function PenggunaPage() {
                 <Select
                   id="organisasi"
                   placeholder="Pilih organisasi"
-                  options={[
+                  options={withOther([
                     { value: "upt", label: "UPT P2TP2A" },
                     { value: "dinas", label: "Dinas Sosial" },
-                  ]}
+                  ])}
                   value={organisasi}
                   onChange={(e) => setOrganisasi(e.target.value)}
                 />
+                {organisasi === OTHER && (
+                  <Input
+                    placeholder="Ketik nama organisasi..."
+                    value={organisasiLain}
+                    onChange={(e) => setOrganisasiLain(e.target.value)}
+                    className="mt-1"
+                  />
+                )}
               </div>
               <div className="flex justify-end gap-3 pt-2">
                 <Button variant="outline" onClick={() => setShowForm(false)}>Batal</Button>

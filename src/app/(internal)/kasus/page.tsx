@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { PageHeader } from "@/components/shared/page-header"
@@ -10,6 +10,20 @@ import { DataTable } from "@/components/tables/data-table"
 import { CaseStatusBadge, VerificationStatusBadge, RiskBadge } from "@/components/shared/status-badge"
 import { type ColumnDef } from "@tanstack/react-table"
 import { Plus, Eye, Edit } from "lucide-react"
+
+const PROVINSI = [
+  "Aceh","Sumatera Utara","Sumatera Barat","Riau","Kepulauan Riau","Jambi","Sumatera Selatan",
+  "Bangka Belitung","Bengkulu","Lampung","Banten","DKI Jakarta","Jawa Barat","Jawa Tengah",
+  "DI Yogyakarta","Jawa Timur","Bali","Nusa Tenggara Barat","Nusa Tenggara Timur",
+  "Kalimantan Barat","Kalimantan Tengah","Kalimantan Selatan","Kalimantan Timur","Kalimantan Utara",
+  "Sulawesi Utara","Sulawesi Tengah","Sulawesi Barat","Sulawesi Selatan","Sulawesi Tenggara",
+  "Gorontalo","Maluku","Maluku Utara","Papua Barat","Papua Barat Daya","Papua","Papua Tengah",
+  "Papua Pegunungan","Papua Selatan",
+]
+
+const JENIS_KEKERASAN = [
+  "Kekerasan Fisik","Kekerasan Psikis","Kekerasan Seksual","Penelantaran Ekonomi","Kekerasan Multi (Campuran)",
+]
 
 interface Kasus {
   id: string
@@ -89,10 +103,45 @@ export default function KasusPage() {
   const [jenisKekerasan, setJenisKekerasan] = useState("")
   const [statusVerifikasi, setStatusVerifikasi] = useState("")
 
-  const wilayahOptions = [
-    { value: "jakarta", label: "Jakarta" },
-    { value: "jabar", label: "Jawa Barat" },
-    { value: "jateng", label: "Jawa Tengah" },
+  const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([])
+  const [vtOptions, setVtOptions] = useState<{ value: string; label: string }[]>([])
+
+  useEffect(() => {
+    async function loadOptions() {
+      try {
+        const [locRes, vtRes] = await Promise.all([
+          fetch("/api/master/locations"),
+          fetch("/api/master/violence-types"),
+        ])
+        const locData = await locRes.json()
+        const vtData = await vtRes.json()
+        if (locData.success) {
+          setLocationOptions(
+            (locData.data || []).map((l: any) => ({ value: l.id, label: l.name }))
+          )
+        } else {
+          setLocationOptions(PROVINSI.map((p) => ({ value: p, label: p })))
+        }
+        if (vtData.success) {
+          setVtOptions(
+            (vtData.data || []).map((v: any) => ({ value: v.id, label: v.name }))
+          )
+        } else {
+          setVtOptions(JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j })))
+        }
+      } catch (e) {
+        console.error("Gagal memuat data referensi:", e)
+        setLocationOptions(PROVINSI.map((p) => ({ value: p, label: p })))
+        setVtOptions(JENIS_KEKERASAN.map((j) => ({ value: j.toLowerCase().replace(/\s+/g, "_"), label: j })))
+      }
+    }
+    loadOptions()
+  }, [])
+
+  const periodeOptions = [
+    { value: "2026", label: "2026" },
+    { value: "2025", label: "2025" },
+    { value: "2024", label: "2024" },
   ]
 
   const statusOptions = [
@@ -112,13 +161,6 @@ export default function KasusPage() {
     { value: "NEEDS_REVISION", label: "Perlu Perbaikan" },
   ]
 
-  const jenisKekerasanOptions = [
-    { value: "fisik", label: "Kekerasan Fisik" },
-    { value: "psikis", label: "Kekerasan Psikis" },
-    { value: "seksual", label: "Kekerasan Seksual" },
-    { value: "ekonomi", label: "Penelantaran Ekonomi" },
-  ]
-
   return (
     <div className="space-y-6">
       <PageHeader title="Data Kasus">
@@ -135,10 +177,10 @@ export default function KasusPage() {
         onSearchChange={setSearch}
         searchPlaceholder="Cari nomor kasus atau penyintas..."
         filters={[
-          { key: "periode", label: "Periode", options: [], value: periode, onChange: setPeriode },
-          { key: "wilayah", label: "Wilayah", options: wilayahOptions, value: wilayah, onChange: setWilayah },
+          { key: "periode", label: "Periode", options: periodeOptions, value: periode, onChange: setPeriode },
+          { key: "wilayah", label: "Wilayah", options: locationOptions, value: wilayah, onChange: setWilayah },
           { key: "status", label: "Status", options: statusOptions, value: status, onChange: setStatus },
-          { key: "jenis_kekerasan", label: "Jenis Kekerasan", options: jenisKekerasanOptions, value: jenisKekerasan, onChange: setJenisKekerasan },
+          { key: "jenis_kekerasan", label: "Jenis Kekerasan", options: vtOptions, value: jenisKekerasan, onChange: setJenisKekerasan },
           { key: "status_verifikasi", label: "Status Verifikasi", options: verifikasiOptions, value: statusVerifikasi, onChange: setStatusVerifikasi },
         ]}
         onReset={() => { setSearch(""); setPeriode(""); setWilayah(""); setStatus(""); setJenisKekerasan(""); setStatusVerifikasi("") }}
