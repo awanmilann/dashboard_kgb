@@ -49,12 +49,12 @@ export function KpiCard({
       <CardContent className="p-4 sm:p-6">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
             <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
               {value}
             </p>
             {description && (
-              <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">{description}</p>
             )}
             {trend && (
               <p

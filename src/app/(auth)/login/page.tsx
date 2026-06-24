@@ -50,7 +50,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(80,120,220,0.06),transparent_50%)] dark:bg-[radial-gradient(ellipse_at_bottom_right,rgba(80,120,220,0.12),transparent_50%)]" />
       <div className="relative w-full max-w-md">
         <div className="mb-6">
-          <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Kembali ke Beranda
           </Link>
