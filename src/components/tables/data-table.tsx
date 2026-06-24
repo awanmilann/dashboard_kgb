@@ -79,7 +79,7 @@ export function DataTable<TData>({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="px-4 py-3 text-left font-medium text-gray-600 cursor-pointer hover:text-gray-900"
+                    className="px-4 py-3 text-left font-medium text-gray-700 cursor-pointer hover:text-gray-900"
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div className="flex items-center gap-1">
@@ -91,7 +91,7 @@ export function DataTable<TData>({
                         asc: <ChevronUp className="h-3 w-3" />,
                         desc: <ChevronDown className="h-3 w-3" />,
                       }[header.column.getIsSorted() as string] ?? (
-                        <ChevronsUpDown className="h-3 w-3 text-gray-400" />
+                        <ChevronsUpDown className="h-3 w-3 text-gray-600" />
                       )}
                     </div>
                   </th>
@@ -117,7 +117,7 @@ export function DataTable<TData>({
       </div>
 
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-600">
           Halaman {table.getState().pagination.pageIndex + 1} dari{" "}
           {table.getPageCount()} ({data.length} total data)
         </p>

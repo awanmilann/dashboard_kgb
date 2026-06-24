@@ -248,8 +248,8 @@ export default function LaporanPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left py-2 font-medium text-gray-500">Metrik</th>
-                        <th className="text-right py-2 font-medium text-gray-500">Jumlah</th>
+                        <th className="text-left py-2 font-medium text-gray-600">Metrik</th>
+                        <th className="text-right py-2 font-medium text-gray-600">Jumlah</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -268,12 +268,12 @@ export default function LaporanPage() {
                       ))}
                     </tbody>
                   </table>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     Laporan ini dihasilkan dari data agregat dashboard. Format export: {format.toUpperCase()}
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+                <div className="flex flex-col items-center justify-center py-16 text-gray-500">
                   <FileText className="h-12 w-12 mb-3" />
                   <p className="text-sm text-center max-w-sm">
                     Pilih jenis laporan dan filter, lalu klik Preview untuk melihat pratinjau.

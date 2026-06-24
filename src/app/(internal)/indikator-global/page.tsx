@@ -220,11 +220,11 @@ const indicators: IndicatorData[] = [
 ]
 
 const categoryColors: Record<string, string> = {
-  "Kekerasan Langsung": "bg-red-500/10 text-red-400 border-red-500/30",
-  "Kekerasan Tidak Langsung": "bg-orange-500/10 text-orange-400 border-orange-500/30",
-  "Praktik Berbahaya": "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
-  "Norma Sosial": "bg-blue-500/10 text-blue-400 border-blue-500/30",
-  "Kejahatan Transnasional": "bg-purple-500/10 text-purple-400 border-purple-500/30",
+  "Kekerasan Langsung": "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/30",
+  "Kekerasan Tidak Langsung": "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30",
+  "Praktik Berbahaya": "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/30",
+  "Norma Sosial": "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30",
+  "Kejahatan Transnasional": "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30",
 }
 
 export default function IndikatorGlobalPage() {
@@ -242,14 +242,14 @@ export default function IndikatorGlobalPage() {
               <Globe className="h-6 w-6 text-purple-400" />
             </div>
             <div className="space-y-2">
-              <p className="text-sm text-purple-200 leading-relaxed">
+              <p className="text-sm text-purple-700 dark:text-purple-200 leading-relaxed">
                 Komisi Statistik PBB melalui <strong>Inter-Agency Expert Group on SDG Indicators (IAEG-SDGs)</strong>{" "}
                 telah menetapkan serangkaian indikator global untuk memantau Tujuan Pembangunan Berkelanjutan (SDGs),{" "}
                 khususnya <strong>Target 5.2</strong> — Menghapuskan segala bentuk kekerasan terhadap perempuan dan anak{" "}
                 perempuan di ruang publik dan privat. Indikator-indikator ini menjadi acuan bagi negara-negara anggota{" "}
                 untuk mengumpulkan data yang terstandarisasi dan dapat diperbandingkan secara global.
               </p>
-              <p className="text-xs text-purple-400/60">
+              <p className="text-xs text-purple-500/80 dark:text-purple-400/60">
                 Sumber: UN Women — Global Database on Violence Against Women & UNSD — SDG Indicators Metadata
               </p>
             </div>
@@ -266,12 +266,12 @@ export default function IndikatorGlobalPage() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="p-2 rounded-lg bg-purple-500/10 shrink-0 group-hover:bg-purple-500/20 transition-colors">
-                      <Icon className="h-5 w-5 text-purple-400" />
+                      <Icon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div className="min-w-0">
-                      <CardTitle className="text-base text-purple-100">{indicator.title}</CardTitle>
+                      <CardTitle className="text-base text-purple-800 dark:text-purple-100">{indicator.title}</CardTitle>
                       {indicator.sdg && (
-                        <p className="text-xs text-purple-400/60 mt-0.5">
+                        <p className="text-xs text-purple-500/80 dark:text-purple-400/60 mt-0.5">
                           SDG Target {indicator.sdg}
                         </p>
                       )}
@@ -285,20 +285,20 @@ export default function IndikatorGlobalPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                <CardDescription className="text-sm text-purple-200/70 leading-relaxed">
+                <CardDescription className="text-sm text-purple-600 dark:text-purple-200/70 leading-relaxed">
                   {indicator.description}
                 </CardDescription>
                 <div className="space-y-1.5 pt-1 border-t border-purple-500/10">
-                  <p className="text-xs font-medium text-purple-400/80 uppercase tracking-wider">Referensi:</p>
+                  <p className="text-xs font-medium text-purple-600 dark:text-purple-400/80 uppercase tracking-wider">Referensi:</p>
                   {indicator.references.map((ref, idx) => (
                     <a
                       key={idx}
                       href={ref.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-xs text-purple-300/60 hover:text-purple-300 transition-colors group/link"
+                      className="flex items-center gap-2 text-xs text-purple-500/80 dark:text-purple-300/60 hover:text-purple-500 dark:hover:text-purple-300 transition-colors group/link"
                     >
-                      <ExternalLink className="h-3 w-3 shrink-0 group-hover/link:text-purple-400" />
+                      <ExternalLink className="h-3 w-3 shrink-0 group-hover/link:text-purple-500 dark:group-hover/link:text-purple-400" />
                       <span className="truncate group-hover/link:underline underline-offset-2">
                         {ref.label}
                       </span>

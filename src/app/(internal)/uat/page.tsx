@@ -69,7 +69,7 @@ export default function UatPage() {
           <CardContent className="flex flex-col items-center justify-center py-16">
             <CheckCircle className="h-16 w-16 text-green-500 mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Terima Kasih!</h3>
-            <p className="text-gray-500 text-center max-w-sm">
+            <p className="text-gray-600 text-center max-w-sm">
               Feedback Anda sangat berharga untuk pengembangan aplikasi ini.
             </p>
             <Button className="mt-6" onClick={() => { setSubmitted(false); setRating(0); setFeedbackText(""); setPageUrl(""); setCategory("") }}>
@@ -112,7 +112,7 @@ export default function UatPage() {
                           "h-8 w-8 transition-colors",
                           (hoverRating || rating) >= star
                             ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300 dark:text-gray-600"
+                            : "text-gray-400 dark:text-gray-600"
                         )}
                       />
                     </button>
@@ -139,7 +139,7 @@ export default function UatPage() {
                   placeholder="/dashboard"
                   value={pageUrl}
                   onChange={(e) => setPageUrl(e.target.value)}
-                  className="flex h-10 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm"
+                  className="flex h-10 w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm"
                 />
               </div>
 

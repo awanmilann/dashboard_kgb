@@ -47,24 +47,24 @@ export default function ProfilPage() {
               </div>
               <div>
                 <p className="font-medium text-gray-900">Admin</p>
-                <p className="text-sm text-gray-500">Administrator Sistem</p>
+                <p className="text-sm text-gray-600">Administrator Sistem</p>
               </div>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
-                <Mail className="h-4 w-4 text-gray-400" />
+                <Mail className="h-4 w-4 text-gray-500" />
                 <span className="text-gray-600">admin@sistemkbg.id</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Building2 className="h-4 w-4 text-gray-400" />
+                <Building2 className="h-4 w-4 text-gray-500" />
                 <span className="text-gray-600">UPT P2TP2A</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Shield className="h-4 w-4 text-gray-400" />
+                <Shield className="h-4 w-4 text-gray-500" />
                 <span className="text-gray-600">Admin</span>
               </div>
             </div>
-            <p className="text-xs text-gray-400 pt-2">
+            <p className="text-xs text-gray-500 pt-2">
               Data profil akan dapat diubah setelah database terhubung.
             </p>
           </CardContent>
