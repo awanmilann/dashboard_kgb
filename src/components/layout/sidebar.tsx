@@ -174,6 +174,11 @@ export function AppSidebar() {
                     <Link
                       key={item.href}
                       href={item.href}
+                      onClick={() => {
+                        if (window.innerWidth < 1024) {
+                          setCollapsed(true)
+                        }
+                      }}
                       className={cn(
                         "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all duration-200",
                         isActive
