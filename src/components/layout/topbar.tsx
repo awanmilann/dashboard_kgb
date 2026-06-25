@@ -2,8 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
-import { useTheme } from "next-themes"
-import { Sun, Moon, Bell, User, ChevronDown, Loader2, CheckCircle, AlertTriangle, Info } from "lucide-react"
+import { Bell, User, ChevronDown, Loader2, CheckCircle, AlertTriangle, Info } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
@@ -37,15 +36,11 @@ function getBreadcrumbs(pathname: string) {
 export function TopNavbar() {
   const pathname = usePathname()
   const { data: session } = useSession()
-  const { theme, setTheme } = useTheme()
   const [profileOpen, setProfileOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
   const [notifications, setNotifications] = useState<any[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [notifLoading, setNotifLoading] = useState(false)
-
-  useEffect(() => { setMounted(true) }, [])
 
   const fetchNotifications = useCallback(async () => {
     setNotifLoading(true)
@@ -86,7 +81,6 @@ export function TopNavbar() {
   }
 
   const breadcrumbs = getBreadcrumbs(pathname)
-  const darkMode = mounted && theme === "dark"
 
   return (
     <header className="sticky top-0 z-30 flex items-center h-16 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-4 lg:px-6">
@@ -184,20 +178,6 @@ export function TopNavbar() {
             </>
           )}
         </div>
-
-        {mounted && (
-          <button
-            onClick={() => setTheme(darkMode ? "light" : "dark")}
-            className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 transition-colors"
-            title={darkMode ? "Mode terang" : "Mode gelap"}
-          >
-            {darkMode ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-          </button>
-        )}
 
         <div className="relative">
           <button

@@ -68,8 +68,8 @@ export default function UatPage() {
         <Card className="max-w-2xl mx-auto">
           <CardContent className="flex flex-col items-center justify-center py-16">
             <CheckCircle className="h-16 w-16 text-green-500 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Terima Kasih!</h3>
-            <p className="text-gray-600 text-center max-w-sm">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Terima Kasih!</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-sm">
               Feedback Anda sangat berharga untuk pengembangan aplikasi ini.
             </p>
             <Button className="mt-6" onClick={() => { setSubmitted(false); setRating(0); setFeedbackText(""); setPageUrl(""); setCategory("") }}>

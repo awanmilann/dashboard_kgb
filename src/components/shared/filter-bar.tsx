@@ -40,7 +40,7 @@ export function FilterBar({
     <div className={cn("flex flex-col sm:flex-row gap-3", className)}>
       {onSearchChange && (
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600 dark:text-gray-400" />
           <Input
             placeholder={searchPlaceholder}
             value={searchValue}
@@ -60,7 +60,7 @@ export function FilterBar({
         />
       ))}
       {hasFilters && onReset && (
-        <Button variant="ghost" size="sm" onClick={onReset} className="text-gray-600">
+        <Button variant="ghost" size="sm" onClick={onReset} className="text-gray-600 dark:text-gray-400">
           <X className="h-4 w-4 mr-1" />
           Reset
         </Button>

@@ -96,7 +96,7 @@ export default function TambahKasusPage() {
     <div className="space-y-6">
       <PageHeader title="Tambah Kasus Baru" />
 
-      <div className="flex items-center justify-between bg-white rounded-lg border p-4">
+      <div className="flex items-center justify-between bg-white dark:bg-gray-900/80 rounded-lg border p-4">
         {steps.map((step, idx) => (
           <div key={step.id} className="flex items-center flex-1">
             <div className="flex items-center gap-2">
@@ -107,7 +107,7 @@ export default function TambahKasusPage() {
                     ? "bg-purple-600 text-white"
                     : currentStep > step.id
                     ? "bg-green-500 text-white"
-                    : "bg-gray-100 text-gray-500"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
                 )}
               >
                 {currentStep > step.id ? "✓" : step.id}
@@ -115,13 +115,13 @@ export default function TambahKasusPage() {
               <span
                 className={cn(
                   "text-sm hidden sm:inline",
-                  currentStep === step.id ? "font-medium text-purple-700" : "text-gray-500"
+                  currentStep === step.id ? "font-medium text-purple-700 dark:text-purple-300" : "text-gray-500 dark:text-gray-400"
                 )}
               >
                 {step.label}
               </span>
             </div>
-            {idx < steps.length - 1 && <div className="flex-1 h-px bg-gray-200 mx-2" />}
+            {idx < steps.length - 1 && <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700 mx-2" />}
           </div>
         ))}
       </div>
@@ -227,7 +227,7 @@ export default function TambahKasusPage() {
                 <Label htmlFor="catatan_pelaporan">Catatan Pelaporan</Label>
                 <textarea
                   id="catatan_pelaporan"
-                  className="flex min-h-[80px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
+                  className="flex min-h-[80px] w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
                   placeholder="Catatan tambahan..."
                   value={catatanPelaporan}
                   onChange={(e) => setCatatanPelaporan(e.target.value)}
@@ -315,7 +315,7 @@ export default function TambahKasusPage() {
                 <Label htmlFor="deskripsi_kejadian">Deskripsi Kejadian</Label>
                 <textarea
                   id="deskripsi_kejadian"
-                  className="flex min-h-[120px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
+                  className="flex min-h-[120px] w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
                   placeholder="Deskripsikan kejadian secara kronologis..."
                   value={deskripsiKejadian}
                   onChange={(e) => setDeskripsiKejadian(e.target.value)}
@@ -446,7 +446,7 @@ export default function TambahKasusPage() {
                   id="penyintas_utama"
                   checked={penyintasUtama}
                   onChange={(e) => setPenyintasUtama(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                  className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-purple-600 focus:ring-purple-600"
                 />
                 <Label htmlFor="penyintas_utama">Penyintas Utama</Label>
               </div>
@@ -548,7 +548,7 @@ export default function TambahKasusPage() {
                 <Label htmlFor="catatan_penanganan">Catatan Penanganan</Label>
                 <textarea
                   id="catatan_penanganan"
-                  className="flex min-h-[80px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
+                  className="flex min-h-[80px] w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
                   placeholder="Catatan penanganan..."
                   value={catatanPenanganan}
                   onChange={(e) => setCatatanPenanganan(e.target.value)}
@@ -559,8 +559,8 @@ export default function TambahKasusPage() {
 
           {currentStep === 5 && (
             <div className="space-y-6">
-              <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-                <h4 className="font-medium text-gray-900">Ringkasan Data Kasus</h4>
+              <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 space-y-3">
+                <h4 className="font-medium text-gray-900 dark:text-gray-100">Ringkasan Data Kasus</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                   <div><span className="text-gray-500">Organisasi:</span> <span className="font-medium">{organisasi || "-"}</span></div>
                   <div><span className="text-gray-500">Tanggal Lapor:</span> <span className="font-medium">{tanggalLapor || "-"}</span></div>
@@ -584,7 +584,7 @@ export default function TambahKasusPage() {
                   id="setuju_kirim"
                   checked={setujuKirim}
                   onChange={(e) => setSetujuKirim(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                  className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-purple-600 focus:ring-purple-600"
                 />
                 <Label htmlFor="setuju_kirim">
                   Saya menyatakan bahwa data yang diisi telah lengkap dan benar

@@ -19,7 +19,7 @@ export function MapCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-gray-700">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {empty ? (

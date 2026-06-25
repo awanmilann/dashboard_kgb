@@ -54,7 +54,7 @@ export default function VerifikasiDetailPage() {
             <Label htmlFor="catatan">Catatan Verifikasi</Label>
             <textarea
               id="catatan"
-              className="flex min-h-[120px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
+              className="flex min-h-[120px] w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2"
               placeholder="Tambahkan catatan untuk tindakan verifikasi..."
               value={catatan}
               onChange={(e) => setCatatan(e.target.value)}

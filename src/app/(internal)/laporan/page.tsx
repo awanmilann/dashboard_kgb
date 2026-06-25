@@ -161,9 +161,9 @@ export default function LaporanPage() {
                   onClick={() => setSelectedType(type.id)}
                   className={cn(
                     "w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
-                    selectedType === type.id
-                      ? "bg-purple-50 text-purple-700 font-medium"
-                      : "text-gray-600 hover:bg-gray-50"
+                      selectedType === type.id
+                        ? "bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 font-medium"
+                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
                   {type.label}
@@ -208,7 +208,7 @@ export default function LaporanPage() {
                     onClick={() => setFormat("pdf")}
                     className={cn(
                       "flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md border text-sm transition-colors",
-                      format === "pdf" ? "border-purple-600 bg-purple-50 text-purple-700" : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                      format === "pdf" ? "border-purple-600 bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300" : "border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
                     )}
                   >
                     <FileText className="h-4 w-4" /> PDF
@@ -217,7 +217,7 @@ export default function LaporanPage() {
                     onClick={() => setFormat("excel")}
                     className={cn(
                       "flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md border text-sm transition-colors",
-                      format === "excel" ? "border-purple-600 bg-purple-50 text-purple-700" : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                      format === "excel" ? "border-purple-600 bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300" : "border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
                     )}
                   >
                     <FileSpreadsheet className="h-4 w-4" /> Excel
@@ -248,8 +248,8 @@ export default function LaporanPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left py-2 font-medium text-gray-600">Metrik</th>
-                        <th className="text-right py-2 font-medium text-gray-600">Jumlah</th>
+                        <th className="text-left py-2 font-medium text-gray-600 dark:text-gray-400">Metrik</th>
+                        <th className="text-right py-2 font-medium text-gray-600 dark:text-gray-400">Jumlah</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -261,8 +261,8 @@ export default function LaporanPage() {
                         ["Belum Dirujuk", previewData.no_referral],
                         ["Belum Diverifikasi", previewData.pending_verification],
                       ].map(([label, val]) => (
-                        <tr key={label as string} className="border-b border-gray-100">
-                          <td className="py-2 text-gray-700">{label as string}</td>
+                        <tr key={label as string} className="border-b border-gray-100 dark:border-gray-800">
+                          <td className="py-2 text-gray-700 dark:text-gray-300">{label as string}</td>
                           <td className="py-2 text-right font-semibold">{val as number}</td>
                         </tr>
                       ))}

@@ -21,7 +21,7 @@ export function ErrorState({
         <div className="mb-4 p-3 rounded-full bg-red-100">
           <AlertCircle className="h-8 w-8 text-red-600" />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-1">{title}</h3>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">{title}</h3>
         <p className="text-sm text-gray-500 text-center max-w-md mb-6">
           {message}
         </p>

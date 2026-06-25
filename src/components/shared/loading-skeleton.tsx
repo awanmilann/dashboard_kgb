@@ -7,14 +7,14 @@ interface SkeletonProps {
 export function Skeleton({ className }: SkeletonProps) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-gray-200", className)}
+      className={cn("animate-pulse rounded-md bg-gray-200 dark:bg-gray-700", className)}
     />
   )
 }
 
 export function CardSkeleton() {
   return (
-    <div className="rounded-lg border bg-white p-6 shadow-sm">
+    <div className="rounded-lg border bg-white dark:bg-gray-900/80 p-6 shadow-sm">
       <Skeleton className="h-4 w-24 mb-2" />
       <Skeleton className="h-8 w-16 mb-2" />
       <Skeleton className="h-3 w-32" />
@@ -35,7 +35,7 @@ export function TableSkeleton({ rows = 5 }: { rows?: number }) {
 
 export function ChartSkeleton() {
   return (
-    <div className="rounded-lg border bg-white p-6 shadow-sm">
+    <div className="rounded-lg border bg-white dark:bg-gray-900/80 p-6 shadow-sm">
       <Skeleton className="h-5 w-32 mb-4" />
       <Skeleton className="h-64 w-full" />
     </div>

@@ -63,33 +63,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --background-secondary: 240 8% 95%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 270 60% 48%;
+    --background: 240 8% 9%;
+    --background-secondary: 240 6% 11%;
+    --foreground: 240 5% 82%;
+    --card: 240 6% 12%;
+    --card-foreground: 240 5% 82%;
+    --popover: 240 6% 12%;
+    --popover-foreground: 240 5% 82%;
+    --primary: 270 55% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 270 65% 94%;
-    --secondary: 240 5% 92%;
-    --secondary-foreground: 240 6% 10%;
-    --muted: 240 5% 92%;
-    --muted-foreground: 240 4% 32%;
-    --accent: 240 5% 92%;
-    --accent-foreground: 240 6% 10%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 240 5% 82%;
-    --input: 240 5% 82%;
-    --ring: 270 60% 48%;
+    --primary-light: 270 50% 18%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 240 5% 82%;
+    --muted: 240 4% 14%;
+    --muted-foreground: 240 4% 52%;
+    --accent: 240 4% 16%;
+    --accent-foreground: 240 5% 82%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 20%;
+    --input: 240 4% 18%;
+    --ring: 270 55% 55%;
     --radius: 0.5rem;
 
-    --dashboard-bg: #f4f2f8;
-    --login-bg: linear-gradient(135deg, #f5f0ff 0%, #faf8fc 50%, #f0f4ff 100%);
-    --sidebar-bg: #0d0a14;
-    --header-bg: #ffffff;
+    --dashboard-bg: #13131a;
+    --login-bg: linear-gradient(135deg, #11111a 0%, #13131a 50%, #11131a 100%);
+    --sidebar-bg: #0a0a12;
+    --header-bg: #14141c;
   }
 
   .dark {

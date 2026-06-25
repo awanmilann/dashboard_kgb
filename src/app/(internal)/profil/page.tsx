@@ -41,27 +41,27 @@ export default function ProfilPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-md">
+            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-md">
               <div className="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-lg">
                 A
               </div>
               <div>
-                <p className="font-medium text-gray-900">Admin</p>
-                <p className="text-sm text-gray-600">Administrator Sistem</p>
+                <p className="font-medium text-gray-900 dark:text-gray-100">Admin</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Administrator Sistem</p>
               </div>
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-gray-500" />
-                <span className="text-gray-600">admin@sistemkbg.id</span>
+                <span className="text-gray-600 dark:text-gray-400">admin@sistemkbg.id</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Building2 className="h-4 w-4 text-gray-500" />
-                <span className="text-gray-600">UPT P2TP2A</span>
+                <span className="text-gray-600 dark:text-gray-400">UPT P2TP2A</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Shield className="h-4 w-4 text-gray-500" />
-                <span className="text-gray-600">Admin</span>
+                <span className="text-gray-600 dark:text-gray-400">Admin</span>
               </div>
             </div>
             <p className="text-xs text-gray-500 pt-2">

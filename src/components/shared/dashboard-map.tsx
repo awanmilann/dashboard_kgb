@@ -109,10 +109,10 @@ export function DashboardMap({
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-700">{title}</CardTitle>
+          <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">{title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-500">
             <MapPin className="h-12 w-12 mb-3" />
             <p className="text-sm text-center max-w-sm">{emptyMessage}</p>
           </div>
@@ -124,7 +124,7 @@ export function DashboardMap({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium text-gray-700">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-gray-700 dark:text-gray-300">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div ref={mapRef} style={{ width: "100%", height: "400px", borderRadius: "8px", zIndex: 0 }} />

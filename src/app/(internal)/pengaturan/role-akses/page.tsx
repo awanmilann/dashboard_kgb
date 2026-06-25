@@ -93,9 +93,9 @@ export default function RoleAksesPage() {
                         type="checkbox"
                         checked={selectedPermissions.includes(perm.id)}
                         onChange={() => togglePermission(perm.id)}
-                        className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                        className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-purple-600 focus:ring-purple-600"
                       />
-                      <span className="text-sm text-gray-700">{perm.label}</span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{perm.label}</span>
                     </label>
                   ))}
                 </div>

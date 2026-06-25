@@ -64,7 +64,7 @@ export function ConfirmDialog({
           </Button>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-600">{description}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
         </CardContent>
         <CardFooter className="gap-2 justify-end">
           <Button variant="outline" onClick={onClose} disabled={loading}>

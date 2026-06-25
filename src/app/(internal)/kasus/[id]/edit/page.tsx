@@ -77,7 +77,7 @@ export default function EditKasusPage() {
     <div className="space-y-6">
       <PageHeader title="Edit Kasus" />
 
-      <div className="flex items-center justify-between bg-white rounded-lg border p-4">
+      <div className="flex items-center justify-between bg-white dark:bg-gray-900/80 rounded-lg border p-4">
         {steps.map((step, idx) => (
           <div key={step.id} className="flex items-center flex-1">
             <div className="flex items-center gap-2">
@@ -88,7 +88,7 @@ export default function EditKasusPage() {
                     ? "bg-purple-600 text-white"
                     : currentStep > step.id
                     ? "bg-green-500 text-white"
-                    : "bg-gray-100 text-gray-500"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
                 )}
               >
                 {currentStep > step.id ? "✓" : step.id}
@@ -96,13 +96,13 @@ export default function EditKasusPage() {
               <span
                 className={cn(
                   "text-sm hidden sm:inline",
-                  currentStep === step.id ? "font-medium text-purple-700" : "text-gray-500"
+                  currentStep === step.id ? "font-medium text-purple-700 dark:text-purple-300" : "text-gray-500 dark:text-gray-400"
                 )}
               >
                 {step.label}
               </span>
             </div>
-            {idx < steps.length - 1 && <div className="flex-1 h-px bg-gray-200 mx-2" />}
+            {idx < steps.length - 1 && <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700 mx-2" />}
           </div>
         ))}
       </div>
@@ -399,8 +399,8 @@ export default function EditKasusPage() {
 
           {currentStep === 5 && (
             <div className="space-y-6">
-              <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-                <h4 className="font-medium text-gray-900">Ringkasan Data Kasus</h4>
+              <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 space-y-3">
+                <h4 className="font-medium text-gray-900 dark:text-gray-100">Ringkasan Data Kasus</h4>
                 <p className="text-sm text-gray-500">
                   Periksa kembali data yang telah diisi sebelum menyimpan perubahan.
                 </p>
@@ -412,7 +412,7 @@ export default function EditKasusPage() {
                   id="setuju_kirim"
                   checked={setujuKirim}
                   onChange={(e) => setSetujuKirim(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600"
+                  className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-purple-600 focus:ring-purple-600"
                 />
                 <Label htmlFor="setuju_kirim">
                   Saya menyatakan bahwa data yang diisi telah lengkap dan benar

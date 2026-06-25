@@ -34,7 +34,7 @@ export default function DetailKasusPage() {
         </Button>
       </PageHeader>
 
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 dark:border-gray-800">
         <nav className="flex overflow-x-auto gap-4">
           {tabs.map((tab) => (
             <button
@@ -43,8 +43,8 @@ export default function DetailKasusPage() {
               className={cn(
                 "px-3 py-2 text-sm font-medium whitespace-nowrap border-b-2 transition-colors",
                 activeTab === tab.id
-                  ? "border-purple-600 text-purple-700"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-purple-600 text-purple-700 dark:text-purple-300"
+                  : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               )}
             >
               {tab.label}
